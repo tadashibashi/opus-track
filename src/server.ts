@@ -3,13 +3,14 @@ import express from "express";
 import morgan from "morgan";
 import methodOverride from "./middleware/methodOverride";
 import router from "./router";
-
+import {setupReactViews} from "express-tsx-views";
 
 const server = express();
 
 // view engine
-server.set("view engine", "ejs");
-server.set("views", "views");
+setupReactViews(server, {
+    viewsDirectory: "views",
+});
 
 // middleware
 server.use(methodOverride("_method"));

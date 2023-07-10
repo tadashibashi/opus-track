@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 const Grid = require("gridfs-stream");
 Grid.mongo = mongoose.mongo;
-let gfs;
+let gfs: any; // no types for this lib :/
 
-export async function config() {
+async function config() {
     const mongoURI = process.env["MONGO_URI"];
 
     if (typeof mongoURI === "string") {
@@ -14,7 +14,11 @@ export async function config() {
     }
 }
 
+function getGfs() {
+    return gfs;
+}
+
 export default {
     config,
-    gfs,
+    getGfs,
 };

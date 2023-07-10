@@ -4,7 +4,17 @@ import audioRouter from "./routes/audio";
 const router = Router();
 
 router.get("/", (req, res) => {
-    res.end("Hello World!");
+    res.render("index", {
+        title: "Hello!",
+        css: ["/styles/styles.css"],
+    });
+});
+
+router.post("/clicked", (req, res) => {
+   res.render("index", {
+      title: "hello!!!!",
+      css: ["/styles/styles.css"],
+   });
 });
 
 router.use("/audio", audioRouter);

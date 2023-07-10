@@ -8,9 +8,6 @@ dotenv.config();
 const PORT = process.env["PORT"];
 
 async function main() {
-    await database.config();
-
-
     if (!PORT) {
         throw Error("main: missing PORT from .env file!");
     }
@@ -18,6 +15,8 @@ async function main() {
     server.listen(PORT, () => {
         console.log("Opus Track is listening at: http://localhost:" + PORT);
     });
+
+    await database.config();
 }
 
 main()
