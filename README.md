@@ -1,7 +1,10 @@
 # Opus Track
+![wireframe-v1](https://raw.githubusercontent.com/tadashibashi/opus-track/main/plan/opus-tracks-wireframe.png)
 
-A small Soundcloud-like app with proof-of-concept features for musician-client 
-project tracking software.
+Early wireframe
+
+*A small Soundcloud-like app with proof-of-concept features for musician-client 
+project tracking software*
 
 
 ## Features
