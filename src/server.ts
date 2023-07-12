@@ -1,9 +1,10 @@
 import cookieParser from "cookie-parser";
 import express from "express";
 import morgan from "morgan";
-import methodOverride from "./middleware/methodOverride";
+import session from "express-session";
 import router from "./router";
 import {setupReactViews} from "express-tsx-views";
+import passport from "passport";
 
 const server = express();
 
@@ -14,7 +15,14 @@ setupReactViews(server, {
 
 // middleware
 server.use(morgan("dev"));
-server.use(express.json())
+server.use(session({
+    secret: process.env["SESSION_SECRET"] as string,
+    resave: false,
+    saveUninitialized: true,
+}));
+server.use(passport.initialize());
+server.use(passport.session());
+server.use(express.json());
 server.use(express.urlencoded({extended: false}));
 server.use(cookieParser());
 server.use(express.static("public"));

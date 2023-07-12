@@ -1,9 +1,12 @@
 import database from "./database";
-import server from "./server";
 
 // constants
 import dotenv from "dotenv";
 dotenv.config();
+
+import server from "./server";
+
+
 
 const PORT = process.env["PORT"];
 
