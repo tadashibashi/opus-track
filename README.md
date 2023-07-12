@@ -1,6 +1,6 @@
 # Opus Track
 
-![Opus Track Logo](https://raw.githubusercontent.com/tadashibashi/opus-track/main/plan/opus-track-logo.png)
+![Opus Track Logo](https://raw.githubusercontent.com/tadashibashi/opus-track/main/plan/opus-track-logo-v3.png)
 
 *A small Soundcloud-like app with proof-of-concept features for musician-client
 project tracking software*
