@@ -2,21 +2,19 @@
 
 ![Opus Track Logo](https://raw.githubusercontent.com/tadashibashi/opus-track/main/plan/opus-track-logo-v3.png)
 
-*A small media sharing and client-creator project tracking app*
+*A small media sharing and client-creator project tracking app in development*
+
+## Early Wireframe
 
 ![wireframe-v1](https://raw.githubusercontent.com/tadashibashi/opus-track/main/plan/opus-tracks-wireframe.png)
-
-*Early wireframe*
-
-
 
 
 ## Features
 
-- Implement secure login sessions
-- Users can upload and play back versions of music tracks
-- Users can comment on sections of audio
-- Implement search
+- [ ] Implement secure login sessions
+- [ ] Users can upload and play back versions of music tracks
+- [ ] Users can comment on sections of audio
+- [ ] Implement search
 
 
 ## Future
