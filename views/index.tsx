@@ -28,10 +28,12 @@ function render(props: Props) {
             </head>
             <body>
                 <h1>{props.title}</h1>
+                <form>
+                    <button hx-post="/clicked" hx-swap="outerHTML">
+                        Click Me
+                    </button>
+                </form>
 
-                <button hx-post="/clicked" hx-swap="outerHTML">
-                    Click Me
-                </button>
             </body>
 
         </html>

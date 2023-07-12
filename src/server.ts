@@ -13,7 +13,6 @@ setupReactViews(server, {
 });
 
 // middleware
-server.use(methodOverride("_method"));
 server.use(morgan("dev"));
 server.use(express.json())
 server.use(express.urlencoded({extended: false}));

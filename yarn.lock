@@ -427,6 +427,7 @@ __metadata:
     express: ^4.18.2
     express-tsx-views: ^1.4.14
     gridfs-stream: ^1.1.1
+    htmx.org: ^1.9.2
     mongoose: ^7.3.2
     morgan: ^1.10.0
     nodemon: ^2.0.22
@@ -1113,6 +1114,13 @@ __metadata:
   dependencies:
     function-bind: ^1.1.1
   checksum: b9ad53d53be4af90ce5d1c38331e712522417d017d5ef1ebd0507e07c2fbad8686fffb8e12ddecd4c39ca9b9b47431afbb975b8abf7f3c3b82c98e9aad052792
+  languageName: node
+  linkType: hard
+
+"htmx.org@npm:^1.9.2":
+  version: 1.9.2
+  resolution: "htmx.org@npm:1.9.2"
+  checksum: 22a8e0fcc3137dedf866ab26b8c79cdb97ef44cd2fd756fdfaa0e1c67d60a49ba29a2d82dbc1648fe6f57820d4945066fd41c4f1466538e4906977a876978737
   languageName: node
   linkType: hard
 
