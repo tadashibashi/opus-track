@@ -13,6 +13,7 @@
     "@types/morgan": "^1",
     "@types/node": "^20.4.0",
     "@types/passport": "^0",
+    "@types/passport-google-oauth": "^1.0.42",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "nodemon": "^2.0.22",
@@ -30,6 +31,7 @@
     "mongoose": "^7.3.2",
     "morgan": "^1.10.0",
     "passport": "^0.6.0",
+    "passport-google-oauth": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
