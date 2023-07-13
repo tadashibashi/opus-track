@@ -20,6 +20,9 @@ credentials.json
 # Build files
 public/scripts
 
+# Local storage
+public/files/users/*
+
 # OS Files
 # Mac
 .DS_Store

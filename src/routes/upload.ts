@@ -10,7 +10,7 @@ router.post("/", upload.any(), (req, res) => {
         res.end("Restricted");
         return;
     }
-    
+
     if (req.files) {
         if (Array.isArray(req.files)) {
             const folder = process.cwd() + "/public/files/users/" + req.user.id + "/";
