@@ -1,6 +1,6 @@
 import passport, {Profile} from "passport";
 import {OAuth2Strategy as GoogleStrategy, VerifyFunction} from "passport-google-oauth";
-import {getEnvironmentVar} from "./util";
+import {getEnv} from "./util";
 import mongoose from "mongoose";
 import User from "./models/User";
 
@@ -9,9 +9,9 @@ import session from "express-session";
 
 export function setupPassport(server: Express) {
     passport.use(new GoogleStrategy({
-            clientID: getEnvironmentVar("GOOGLE_CLIENT_ID"),
-            clientSecret: getEnvironmentVar("GOOGLE_SECRET"),
-            callbackURL: getEnvironmentVar("GOOGLE_CALLBACK"),
+            clientID: getEnv("GOOGLE_CLIENT_ID"),
+            clientSecret: getEnv("GOOGLE_SECRET"),
+            callbackURL: getEnv("GOOGLE_CALLBACK"),
         },
         // Called when user verified via Google Strategy
         async function(accessToken: string, refreshToken: string, profile: Profile, cb: VerifyFunction) {
@@ -65,7 +65,7 @@ export function setupPassport(server: Express) {
         next();
     });
     server.use(session({
-        secret: getEnvironmentVar("SESSION_SECRET"),
+        secret: getEnv("SESSION_SECRET"),
         resave: false,
         saveUninitialized: true,
     }));

@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import {getEnv} from "./util";
 
 async function config() {
-    const mongoURI = process.env["MONGO_URI"];
+    const mongoURI = getEnv("MONGO_URI");
 
     if (typeof mongoURI === "string") {
         await mongoose.connect(mongoURI);

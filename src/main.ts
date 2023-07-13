@@ -1,14 +1,8 @@
 import database from "./database";
-
-// constants
-import dotenv from "dotenv";
-dotenv.config();
-
 import server from "./server";
+import {getEnv} from "./util";
 
-
-
-const PORT = process.env["PORT"];
+const PORT = getEnv("PORT");
 
 async function main() {
     if (!PORT) {
