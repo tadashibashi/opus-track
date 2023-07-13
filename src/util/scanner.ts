@@ -30,11 +30,12 @@ export async function config(debugMode = false) {
             },
             preference: "clamdscan"
 
-
-        }, (err, clam) => {
+        }, async (err, clam) => {
             scanner = clam;
-            if (!clam) {
-                console.error("Failed to initialize clamd", err);
+            if (err) {
+                console.error("Failed to initialize connection to clamd antivirus! "
+                    + "Did you make sure to start clamd?\n"
+                    , err.message);
                 reject(err);
             } else {
                 resolve(true);
