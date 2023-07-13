@@ -20,6 +20,10 @@ export const userSchema = new Schema({
     email: String,
     avatar: String,
     emailVerified: Boolean,
+    usertype: {
+        type: String,
+        enum: ["admin", "user"]
+    },
 }, {
     timestamps: true,
 });
