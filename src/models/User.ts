@@ -37,6 +37,10 @@ export const userSchema = new Schema({
         enum: ["admin", "user"],
         default: ["user"],
     },
+    infectedFileCount: {
+        type: Number,
+        default: 0,
+    }
 }, {
     timestamps: true,
 });
