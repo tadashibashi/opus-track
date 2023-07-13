@@ -1,5 +1,17 @@
 import mongoose, {Schema} from "mongoose";
 
+export interface IUser {
+    firstName: string;
+    lastName: string;
+    username: string;
+    googleId: string;
+    email: string;
+    avatar: string;
+    emailVerified: boolean;
+    usertype: ("admin" | "user")[];
+    infectedFileCount: number;
+}
+
 export const userSchema = new Schema({
     firstName: {
         type: String,

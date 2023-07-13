@@ -1,6 +1,6 @@
 import mongoose, {Schema} from "mongoose"
 
-interface IFile {
+export interface IFile {
     filename: string,
     folder: string,
     mimetype: string,
