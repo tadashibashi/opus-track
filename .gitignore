@@ -15,8 +15,11 @@
 
 # Secrets
 .env
+credentials.json
+
+# Build files
+public/scripts
 
 # OS Files
 # Mac
 .DS_Store
-

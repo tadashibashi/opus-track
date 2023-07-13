@@ -1,7 +1,15 @@
 import mongoose, {Schema} from "mongoose";
 
 export const userSchema = new Schema({
-    name: {
+    firstName: {
+        type: String,
+        required: false,
+    },
+    lastName: {
+        type: String,
+        required: false,
+    },
+    username: {
         type: String,
         required: true
     },
@@ -11,6 +19,7 @@ export const userSchema = new Schema({
     },
     email: String,
     avatar: String,
+    emailVerified: Boolean,
 }, {
     timestamps: true,
 });

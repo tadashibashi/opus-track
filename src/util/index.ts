@@ -8,3 +8,5 @@ export function getEnvironmentVar(varName: string): string {
 
     return variable;
 }
+
+// TODO: expressPerformance that creates middleware for testing time
