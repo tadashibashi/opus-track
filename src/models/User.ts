@@ -21,8 +21,9 @@ export const userSchema = new Schema({
     avatar: String,
     emailVerified: Boolean,
     usertype: {
-        type: String,
-        enum: ["admin", "user"]
+        type: [String],
+        enum: ["admin", "user"],
+        default: ["user"],
     },
 }, {
     timestamps: true,
