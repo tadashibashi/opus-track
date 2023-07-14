@@ -14,8 +14,22 @@ setupReactViews(server, {
 });
 
 // middleware
-server.use(helmet.hsts());
-server.disable("x-powered-by");
+server.use(helmet({
+    contentSecurityPolicy: {
+        useDefaults: false,
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "google.com", "unpkg.com"],
+            objectSrc: ["'none'"],
+            styleSrc: ["'self'", "unpkg.com"],
+        }
+    },
+    noSniff: true,
+    hidePoweredBy: true,
+    xXssProtection: true,
+    strictTransportSecurity: false,
+}));
+
 server.use(morgan("dev"));
 setupPassport(server);
 server.use((req, res, next) => {
