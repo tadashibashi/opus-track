@@ -1,22 +1,21 @@
-import express from "express";
+import {Request, Response} from "express";
+
 import fs from "fs";
-import mongoose from "mongoose";
-import multer from "multer";
-
-import File, {IFile} from "../models/File";
 import {scanner} from "../util";
-import {IUser} from "../models/User";
+import {UserDocument} from "../models/User";
+import {FileDocument, File} from "../models/File";
 
 
-const upload = multer();
-const router = express.Router();
-scanner.config();
+scanner.config()
+    .catch(err => console.error(err));
+
 
 class FileInfectedError extends Error {
     get message() {
         return "FileInfectedError: infected or suspicious file.";
     }
 }
+
 
 /**
  * Creates a file in db and local file system.
@@ -26,7 +25,7 @@ class FileInfectedError extends Error {
  * @returns promise resolving to true on successful file write, and false on failure to write.
  * On failure, both database data and local file are cleaned up if any was written.
  */
-async function createFile(file: Express.Multer.File, user: mongoose.HydratedDocument<IUser>, folder: string) {
+async function createFile(file: Express.Multer.File, user: UserDocument, folder: string) {
     const result = await scanner.scanFile(file.buffer);
     if (result.isInfected) {
         console.error("[upload.createFile]: infected file:", file.originalname, "uploaded by user",
@@ -34,7 +33,7 @@ async function createFile(file: Express.Multer.File, user: mongoose.HydratedDocu
         throw new FileInfectedError();
     }
 
-    let dbFile: mongoose.HydratedDocument<IFile> | null = null;
+    let dbFile: FileDocument | null = null;
     try {
         dbFile = await File.create({
             filename: file.originalname,
@@ -68,7 +67,15 @@ async function createFile(file: Express.Multer.File, user: mongoose.HydratedDocu
     return true;
 }
 
-router.post("/", upload.any(), async (req, res) => {
+export
+async function show(req: Request, res: Response) {
+    const fileId = req.query["id"];
+
+    const file = await File.findById(fileId);
+}
+
+export
+async function create(req: Request, res: Response) {
     if (!req.user) {
         res.end("Restricted");
         return;
@@ -114,6 +121,4 @@ router.post("/", upload.any(), async (req, res) => {
     }
 
     res.redirect("/");
-});
-
-export default router;
+}

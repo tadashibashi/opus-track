@@ -1,13 +1,13 @@
 import { Router } from "express";
 import indexRouter from "./routes/index";
 import audioRouter from "./routes/audio";
-import uploadRouter from "./routes/upload";
+import filesRouter from "./routes/files";
 
 const router = Router();
 
 router.use("/", indexRouter);
 router.use("/audio", audioRouter);
-router.use("/upload", uploadRouter);
+router.use("/files", filesRouter);
 
 
 export default router;

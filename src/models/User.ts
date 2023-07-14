@@ -47,4 +47,6 @@ export const userSchema = new Schema({
 
 const User = mongoose.model("User", userSchema);
 
+export type UserDocument = mongoose.HydratedDocument<IUser>;
+
 export default User;

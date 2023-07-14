@@ -21,4 +21,8 @@ const fileSchema = new Schema<IFile>({
     timestamps: true,
 });
 
-export default mongoose.model("File", fileSchema);
+export type FileDocument = mongoose.HydratedDocument<IFile>;
+
+export const File = mongoose.model("File", fileSchema);
+
+export default File;
