@@ -15,6 +15,7 @@ setupReactViews(server, {
 
 // middleware
 server.use(helmet.hsts());
+server.disable("x-powered-by");
 server.use(morgan("dev"));
 setupPassport(server);
 server.use((req, res, next) => {

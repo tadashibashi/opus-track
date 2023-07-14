@@ -2,6 +2,7 @@
   "name": "opus-tracks",
   "private": true,
   "scripts": {
+    "start": "npm run serve:prod",
     "serve:dev": "nodemon -e ts,tsx,js src/main.ts",
     "serve:prod": "ts-node --transpile-only src/main.ts",
     "update-antivirus": "freshclam",
