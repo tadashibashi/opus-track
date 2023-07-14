@@ -15,13 +15,17 @@ async function main() {
         await database.config();
     } catch(e) {
         if (e instanceof Error)
-            console.error(e);
+            console.error(e.message);
         throw e;
     }
 }
 
 main()
-    .catch(err => console.error("Critical error: program shutting down."))
+    .catch(err => {
+        console.error("Critical error: program shutting down.")
+        if (!(err instanceof Error))
+            console.error("Uncaught exception:", err);
+    })
     .then(any => {
         console.log("Mongoose connection and Models initialized!")
         console.log(m);

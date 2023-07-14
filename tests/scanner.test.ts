@@ -9,7 +9,7 @@ describe("scanner tests", () => {
 
     test("infected positive", async () => {
 
-        // break up virus test in case local antivirus tries to quarantine and delete this file
+        // eicar standard virus test, broken up in case local antivirus deletes/quarantines this file.
         const infectedBuffer = Buffer.from("X5O!" + "P%@AP" + "[4\\PZX5" + "4(P^)7CC)7}$E" + "ICAR-STA" +
             "NDARD" + "-ANTI" + "VIRUS-TE" + "ST-FIL" + "E!$" + "H+" + "H*");
         const result = await scanFile(infectedBuffer);
