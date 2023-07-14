@@ -36,6 +36,7 @@
     "express-session": "^1.17.3",
     "express-tsx-views": "^1.4.14",
     "googleapis": "105",
+    "helmet": "^7.0.0",
     "htmx.org": "^1.9.2",
     "mongoose": "^7.3.2",
     "morgan": "^1.10.0",

@@ -4,6 +4,7 @@ import morgan from "morgan";
 import router from "./router";
 import {setupReactViews} from "express-tsx-views";
 import {setupPassport} from "./passport";
+import helmet from "helmet";
 
 const server = express();
 
@@ -13,6 +14,7 @@ setupReactViews(server, {
 });
 
 // middleware
+server.use(helmet.hsts());
 server.use(morgan("dev"));
 setupPassport(server);
 server.use((req, res, next) => {
