@@ -59,36 +59,13 @@ export function setupPassport(server: Express) {
         }
     });
 
-    let time: number;
-    server.use((req, res, next) => {
-        time = performance.now();
-        next();
-    });
     server.use(session({
         secret: getEnv("SESSION_SECRET"),
         resave: false,
         saveUninitialized: true,
     }));
-    server.use((req, res, next) => {
-        console.log("Session time: ", performance.now() - time);
-        next();
-    });
-    server.use((req, res, next) => {
-        time = performance.now();
-        next();
-    });
+
     server.use(passport.initialize());
-    server.use((req, res, next) => {
-        console.log("Passport initialize: ", performance.now() - time);
-        next();
-    });
-    server.use((req, res, next) => {
-        time = performance.now();
-        next();
-    });
+
     server.use(passport.session());
-    server.use((req, res, next) => {
-        console.log("Passport session time: ", performance.now() - time);
-        next();
-    });
 }
