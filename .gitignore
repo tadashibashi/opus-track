@@ -18,7 +18,8 @@
 credentials.json
 
 # Build files
-public/scripts
+public/scripts/*
+!public/scripts/thirdparty
 
 # Local storage
 public/files/users/*
