@@ -7,6 +7,7 @@ export interface IUser {
     googleId: string;
     email: string;
     avatar: string;
+    displayName: string;
     emailVerified: boolean;
     usertype: ("admin" | "user")[];
     infectedFileCount: number;
@@ -24,6 +25,9 @@ export const userSchema = new Schema({
     username: {
         type: String,
         required: true
+    },
+    displayName: {
+        type: String,
     },
     googleId: {
         type: String,

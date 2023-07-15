@@ -1,12 +1,19 @@
 <%
-let { title, subtitle, css, scripts,
-    header, main, footer, user } = vars;
+/**
+ * Driver ejs file for {@link PageEngine}
+ */
 
-title = title || ""
-subtitle = subtitle || ""
+// Retrieve and set local variable defaults.
+/** @type PageOptions */
+const locals = vars;
+
+let { title, subtitle, css, scripts,
+    header, main, footer, user } = locals;
+
+title = title || "";
+subtitle = subtitle || "";
 css = css || [];
-scripts = scripts || []
-main = main || []
+scripts = scripts || [];
 %>
 
 <!DOCTYPE html>
@@ -33,19 +40,19 @@ main = main || []
 <body>
     <% if (header && header.partial) { %>
     <header>
-        <%- include(header.partial, Object.assign(header.vars || {}, {user}))%>
+        <%- include(header.partial, header.locals || {})%>
     </header>
     <% } %>
 
+    <% if (main && main.partial) { %>
     <main>
-        <% main.forEach(partialInfo => { %>
-            <%- include(partialInfo.partial, partialInfo.vars || {}) %>
-        <% }); %>
+        <%- include(main.partial, main.locals || {}) %>
     </main>
+    <% } %>
 
     <% if (footer && footer.partial) { %>
     <footer>
-        <%- include(footer.partial, footer.vars || {}) %>
+        <%- include(footer.partial, footer.locals || {}) %>
     </footer>
     <% } %>
 

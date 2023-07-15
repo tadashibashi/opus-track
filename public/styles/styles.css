@@ -5,9 +5,7 @@
 html {
     margin: 0;
     width: 100vw;
-    height: 100vh;
-
-
+    height: min(100vh);
 }
 
 body {
@@ -44,8 +42,6 @@ footer {
     text-align: center;
 }
 
-h1 {
-    color: red;
+footer p {
+    font-size: max(min(4vmin, .5rem), 1vmin);
 }
-
-

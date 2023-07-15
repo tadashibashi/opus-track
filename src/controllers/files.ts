@@ -114,8 +114,8 @@ async function create(req: Request, res: Response) {
 
         try {
             await createFile(req.file, req.user, folder);
-        } catch(e) {
-            if (e instanceof FileInfectedError) {
+        } catch(err) {
+            if (err instanceof FileInfectedError) {
                 req.user.infectedFileCount = !req.user.infectedFileCount ? 1 : req.user.infectedFileCount + 1;
                 req.user.save();
             }

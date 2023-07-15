@@ -1,13 +1,23 @@
+// master router
 import { Router } from "express";
-import indexRouter from "./routes/index";
-import audioRouter from "./routes/audio";
-import filesRouter from "./routes/files";
-
 const router = Router();
 
-router.use("/", indexRouter);
-router.use("/audio", audioRouter);
-router.use("/files", filesRouter);
+import * as pages from "./pages";
 
+pages.init("Opus Track");
+
+// sub-routers
+import authRouter from "./routes/auth";
+import indexRouter from "./routes/index";
+import tracksRouter from "./routes/tracks";
+import filesRouter from "./routes/files";
+import profileRouter from "./routes/profile";
+
+// mount routers
+router.use("/", indexRouter);
+router.use("/auth", authRouter);
+router.use("/files", filesRouter);
+router.use("/tracks", tracksRouter);
+router.use("/profile", profileRouter);
 
 export default router;

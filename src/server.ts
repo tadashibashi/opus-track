@@ -17,9 +17,11 @@ server.use(helmet({
         useDefaults: false,
         directives: {
             defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", "google.com"],
+            scriptSrc: ["'self'", "google.com",
+                "kit.fontawesome.com"],
             objectSrc: ["'none'"],
             styleSrc: ["'self'"],
+            connectSrc: ["'self'", "accounts.google.com"],
         }
     },
     noSniff: true,
