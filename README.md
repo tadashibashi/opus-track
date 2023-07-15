@@ -1,6 +1,6 @@
 # Opus Track – Project Manager
 
-![Opus Track Logo](https://raw.githubusercontent.com/tadashibashi/opus-track/main/plan/opus-track-logo-v3.png)
+![Opus Track Logo](https://raw.githubusercontent.com/tadashibashi/opus-track/main/public/images/logo.png)
 
 *A small media sharing and client-creator project tracking app in development*
 
