@@ -1,13 +1,22 @@
-import "soundmanager2";
+import {AudioEngine, Music} from "../../lib/WebAA";
 
-
-export class AudioPlayer {
-    sounds: Map<string, soundmanager.SMSound>;
-    current: number;
+/**
+ * Manages sound for an entire page
+ */
+class AudioPlayer {
+    engine: AudioEngine;
+    current: Music | null;
+    last: Music | null;
 
     constructor() {
-        this.current = 0;
-        this.sounds = new Map;
+        this.engine = new AudioEngine();
+        this.engine.init();
 
+        this.current = null;
+        this.last = null;
+    }
+
+    load(path: string) {
+        return this.engine.loadMusic(path);
     }
 }
