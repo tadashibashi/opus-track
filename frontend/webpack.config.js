@@ -47,7 +47,7 @@ const config = {
 
 // Set the entries for each file inside of src/pages
 const pagesDir = path.resolve(__dirname, "src/pages");
-const files = fs.readdirSync(pagesDir);
+const files = fs.readdirSync(pagesDir, {recursive: true});
 files.forEach(file => {
   const extname = path.extname(file);
   if (extname === ".ts" || extname === ".tsx") {
