@@ -2,16 +2,14 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import morgan from "morgan";
 import router from "./router";
-import {setupReactViews} from "express-tsx-views";
 import {setupPassport} from "./passport";
 import helmet from "helmet";
 
 const server = express();
 
 // view engine
-setupReactViews(server, {
-    viewsDirectory: "views",
-});
+server.set("view engine", "ejs");
+server.set("views", "views");
 
 // middleware
 server.use(helmet({
@@ -19,9 +17,9 @@ server.use(helmet({
         useDefaults: false,
         directives: {
             defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", "google.com", "unpkg.com"],
+            scriptSrc: ["'self'", "google.com"],
             objectSrc: ["'none'"],
-            styleSrc: ["'self'", "unpkg.com"],
+            styleSrc: ["'self'"],
         }
     },
     noSniff: true,

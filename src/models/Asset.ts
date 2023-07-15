@@ -1,6 +1,35 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, {Schema, Types} from "mongoose";
 
-const creditSchema = new Schema({
+// ===== Interfaces ============================================
+
+interface ICredit {
+    role: string;
+    name: string;
+    userId: Types.ObjectId | null;
+}
+export type CreditSubDoc = Types.Subdocument<ICredit>;
+
+
+interface IMeta {
+    title: string;
+    credits: Types.Subdocument<ICredit>[];
+    userId: Types.ObjectId;
+}
+export type MetaSubDoc = Types.Subdocument<IMeta>;
+
+
+interface IAsset {
+    type: string;
+    user: Types.ObjectId;
+    file: Types.ObjectId;
+    meta: Types.Subdocument;
+}
+export type AssetDocument = mongoose.HydratedDocument<IAsset>;
+
+
+// ===== Schemas ==============================================
+
+const creditSchema = new Schema<ICredit>({
     role: String,
     name: String,
     userId: { // if referring to a specific Opus Track user, may be null: link to profile, etc.
@@ -10,12 +39,15 @@ const creditSchema = new Schema({
         default: null,
     }
 });
-
-const metaSchema = new Schema({
+const metaSchema = new Schema<IMeta>({
     title: {
         type: String,
         require: true,
     },
+    credits: {
+        type: [creditSchema],
+        default: [],
+    }
 });
 
 export enum AssetType {
@@ -24,8 +56,8 @@ export enum AssetType {
     Video = "Video",
     Doc = "Doc",
 }
-
 const assetTypes = Object.keys(AssetType);
+
 
 const assetSchema = new Schema({
     type: {
@@ -51,4 +83,6 @@ const assetSchema = new Schema({
     }
 });
 
-export default mongoose.model("Asset", assetSchema);
+export const Asset = mongoose.model("Asset", assetSchema);
+
+export default Asset;

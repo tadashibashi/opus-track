@@ -2,9 +2,46 @@
     box-sizing: border-box;
 }
 
+html {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+
+
+}
+
 body {
     width: 100%;
     height: 100%;
+
+    display: grid;
+    grid-template-areas:
+    "header"
+    "main"
+    "footer";
+
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+
+    align-content: center;
+    background: #eaeaea;
+}
+
+nav {
+    position: sticky;
+}
+
+header {
+    grid-area: header;
+}
+
+main {
+    grid-area: main;
+}
+
+footer {
+    grid-area: footer;
+    text-align: center;
 }
 
 h1 {

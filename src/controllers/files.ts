@@ -28,8 +28,8 @@ class FileInfectedError extends Error {
 async function createFile(file: Express.Multer.File, user: UserDocument, folder: string) {
     const result = await scanner.scanFile(file.buffer);
     if (result.isInfected) {
-        console.error("[upload.createFile]: infected file:", file.originalname, "uploaded by user",
-            `${user.firstName} ${user.lastName}: ${user._id}`);
+        console.error("[upload.createFile]: infected file:", file.originalname,
+            "uploaded by user", `${user.firstName} ${user.lastName}: ${user._id}`);
         throw new FileInfectedError();
     }
 
@@ -41,9 +41,9 @@ async function createFile(file: Express.Multer.File, user: UserDocument, folder:
             size: file.size,
             user: user._id
         });
-    } catch(e) {
-        if (e instanceof Error)
-            console.error(e.message);
+    } catch(err) {
+        if (err instanceof Error)
+            console.error(err.message);
         console.error("failed to create File metadata in db");
         return false;
     }
@@ -56,9 +56,9 @@ async function createFile(file: Express.Multer.File, user: UserDocument, folder:
             console.log("wrote file:", file.originalname);
         });
 
-    } catch(e) {
-        if (e instanceof Error)
-            console.error(`failed to write file ${file.originalname}:`, e.message);
+    } catch(err) {
+        if (err instanceof Error)
+            console.error(`failed to write file ${file.originalname}:`, err.message);
         await File.deleteOne({_id: dbFile._id});
         console.error("deleted corresponding db metadata");
         return false;
@@ -67,12 +67,14 @@ async function createFile(file: Express.Multer.File, user: UserDocument, folder:
     return true;
 }
 
+
 export
 async function show(req: Request, res: Response) {
     const fileId = req.query["id"];
 
     const file = await File.findById(fileId);
 }
+
 
 export
 async function create(req: Request, res: Response) {

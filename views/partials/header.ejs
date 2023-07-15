@@ -1,0 +1,15 @@
+<!-- depends on Bootstrap 5 -->
+<%
+let logText = user ? "Logout" : "Login"
+let logLink = user ? "/logout" : "/auth/google"
+%>
+
+<nav class="navbar container">
+    <div class="navbar-brand">
+
+        <h2><a href="/">Opus Track</a></h2>
+    </div>
+
+    <div>Profile</div>
+    <div><a href="<%=logLink%>"><%=logText%></a></div>
+</nav>
