@@ -1,9 +1,12 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
+const fs = require("fs");
 
+// Get production or development mode
 const isProduction = process.env.NODE_ENV == 'production';
 
+// Main configuration
 const config = {
   entry: {
     AudioPlayer: "./src/audio-player/index.ts"
@@ -41,13 +44,21 @@ const config = {
   },
 };
 
-module.exports = () => {
-  if (isProduction) {
-    config.mode = 'production';
 
-
-  } else {
-    config.mode = 'development';
+// Set the entries for each file inside of src/pages
+const pagesDir = path.resolve(__dirname, "src/pages");
+const files = fs.readdirSync(pagesDir);
+files.forEach(file => {
+  const extname = path.extname(file);
+  if (extname === ".ts" || extname === ".tsx") {
+    file = file.substring(0, file.lastIndexOf("."));
+    config.entry["pages/" + file] = "./src/pages/" + file + ".ts";
   }
+});
+
+
+module.exports = () => {
+  // isProduction from process.env.NODE_ENV sets the mode
+  config.mode = isProduction ? "production" : "development";
   return config;
 };
