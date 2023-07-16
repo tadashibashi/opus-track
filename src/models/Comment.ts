@@ -12,6 +12,9 @@ interface IComment {
     region: IRegion;
     author: Types.ObjectId;
     asset: Types.ObjectId;
+
+    // whether to show comment publicly, or for private reference
+    isPublic: boolean,
     createdAt: Date;
     updatedAt: Date;
 }
@@ -40,6 +43,10 @@ const commentSchema = new Schema<IComment>({
     asset: {
         type: Schema.ObjectId,
         ref: "Asset",
+    },
+    isPublic: {
+        type: Boolean,
+        default: true,
     }
 }, {
     timestamps: true,
