@@ -22,6 +22,7 @@ server.use(helmet({
             objectSrc: ["'none'"],
             styleSrc: ["'self'"],
             connectSrc: ["'self'", "accounts.google.com"],
+            imgSrc: ["'self' blob: data:", "*.googleusercontent.com"]
         }
     },
     noSniff: true,

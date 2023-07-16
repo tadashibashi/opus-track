@@ -7,6 +7,7 @@ export interface IUser {
     googleId: string;
     email: string;
     avatar: string;
+    avatarFile: string;
     displayName: string;
     emailVerified: boolean;
     usertype: ("admin" | "user")[];
@@ -35,6 +36,11 @@ export const userSchema = new Schema({
     },
     email: String,
     avatar: String,
+    avatarFile: {
+        type: Schema.ObjectId,
+        nullable: true,
+        default: null,
+    },
     emailVerified: Boolean,
     usertype: {
         type: [String],

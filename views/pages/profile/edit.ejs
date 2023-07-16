@@ -1,0 +1,11 @@
+<section>
+    <h1>Edit Profile</h1>
+    <form class="form-control-color" method="POST" action="/profile/update">
+        <label class="form-label">
+            Avatar
+            <input class="form-input" type="file" name="file" />
+        </label>
+        <label class="form-label"></label>
+        <img id="profile-image" src="<%=user.avatar%>" />
+    </form>
+</section>
