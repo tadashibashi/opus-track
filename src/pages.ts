@@ -8,7 +8,7 @@
  * 1. initialize once with {@link init}
  * 2. render pages with {@link render}
  *
- * These files will get auto-loaded during a page render
+ * These files will autoload during a page render
  */
 
 import passport from "passport";
