@@ -3,7 +3,7 @@ import {AudioEngine, Music} from "../../lib/WebAA";
 /**
  * Manages sound for an entire page
  */
-class AudioPlayer {
+export class AudioPlayer {
     engine: AudioEngine;
     current: Music | null;
     last: Music | null;

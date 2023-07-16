@@ -1,4 +1,4 @@
-import {AudioCache} from "./AudioPlayer";
+import {AudioPlayer} from "./AudioPlayer";
 
 const SoundManagerTimeout = 10000;
 
@@ -33,7 +33,7 @@ function preload() {
 
 async function main() {
     await preload();
-    const audio = new AudioCache();
+    const audio = new AudioPlayer();
     console.log(audio);
 }
 
