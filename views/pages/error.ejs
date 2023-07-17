@@ -1,0 +1,23 @@
+<%
+const {error, statusCode, isDevelopment} = locals;
+%>
+
+<header class="container pt-4">
+    <h1><%=error.name%></h1>
+    <p class="text-sm">status code: <%=statusCode%></p>
+
+    <p><i><%=error.message%></i></p>
+
+</header>
+
+
+<% if (isDevelopment) { %>
+    <div class="container rounded-2 bg-danger-subtle p-2">
+        <pre class="bg-light rounded-2 p-2"><%=error.stack%></pre>
+    </div>
+
+<% } else { %>
+    <div class="container">
+        <p>We're sorry for the inconvenience.</p>
+    </div>
+<% } %>

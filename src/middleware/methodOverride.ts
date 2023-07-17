@@ -24,9 +24,8 @@ export default function methodOverride(methodName: string = "_method") {
                     req.method = method;
                     break;
                 default:
-                    console.warn("[methodOverride]: User attempted to override with an " +
-                        "invalid request method type: \"" + method + "\"");
-                    break;
+                    next(new Error(`Request method \"${method}\" was not valid.`));
+                    return;
             }
         }
 

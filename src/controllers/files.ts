@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 
 import fs from "fs";
-import {scanner} from "../util";
+import {getEnv, scanner} from "../util";
 import {UserDocument} from "../models/User";
 import {FileDocument, File} from "../models/File";
 
@@ -16,55 +16,90 @@ class FileInfectedError extends Error {
     }
 }
 
+export async function deleteFile(file: FileDocument) {
+    let result = false;
+    try {
+        result = await new Promise((resolve, reject) => {
+            fs.rm(file.fullpath, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(true);
+                }
+            });
+        });
+    } catch(err) {
+        return false;
+    }
+
+    if (!result)
+        return false;
+
+    try {
+        await File.deleteOne({_id: file._id});
+    } catch(err) {
+        console.error("Successfully deleted actual file, but not the File metadata in the DB!");
+        return false;
+    }
+
+    return true;
+}
+
 
 /**
  * Creates a file in db and local file system.
- * @param file
- * @param user
- * @param folder
+ * @param file - the file retrieved from Multer.
+ * @param user - user that the File will become associated with.
+ * @param folder - will save to this exact folder on server.
+ * Make sure to set to something like: `process.cwd() + "/public/files/users/"`.
  * @returns promise resolving to true on successful file write, and false on failure to write.
  * On failure, both database data and local file are cleaned up if any was written.
  */
-async function createFile(file: Express.Multer.File, user: UserDocument, folder: string) {
-    const result = await scanner.scanFile(file.buffer);
+export async function createFile(file: Express.Multer.File, user: UserDocument, folder: string) {
+    const result = (getEnv("NODE_ENV") === "development") ? // TODO: workaround for class project, make sure to actually import clamd into the environment for production!!!
+        await scanner.scanFile(file.buffer) : {isInfected: false};
+
     if (result.isInfected) {
         console.error("[upload.createFile]: infected file:", file.originalname,
             "uploaded by user", `${user.firstName} ${user.lastName}: ${user._id}`);
         throw new FileInfectedError();
     }
 
-    let dbFile: FileDocument | null = null;
-    try {
-        dbFile = await File.create({
-            filename: file.originalname,
-            mimetype: file.mimetype,
-            size: file.size,
-            user: user._id
-        });
-    } catch(err) {
-        if (err instanceof Error)
-            console.error(err.message);
-        console.error("failed to create File metadata in db");
-        return false;
-    }
+    let dbFile: FileDocument | null = new File ({
+        filename: file.originalname,
+        folder: "/",
+        mimetype: file.mimetype,
+        size: file.size,
+        user: user._id,
+    });
 
-    if (dbFile === null) return false;
+
+    if (dbFile === null) return null;
 
     let filepath = folder + dbFile._id;
+    dbFile.path = "/files/" + (user ? "users/" + user._id : "") + "/" + dbFile._id;
+    dbFile.fullpath = filepath;
     try {
         fs.writeFile(filepath, file.buffer, () => {
-            console.log("wrote file:", file.originalname);
+            console.log("wrote file:", file.originalname + ", at " + filepath);
         });
 
     } catch(err) {
         if (err instanceof Error)
             console.error(`failed to write file ${file.originalname}:`, err.message);
-        await File.deleteOne({_id: dbFile._id});
-        console.error("deleted corresponding db metadata");
-        return false;
+        return null;
     }
 
-    return true;
+    try {
+        await dbFile.save();
+    } catch(err) {
+        if (err instanceof Error)
+            console.error(`failed to write file ${file.originalname}, could not save object to the database`, err.message);
+        fs.rm(filepath, () => console.log("removing corresponding file from fs"));
+        return null;
+    }
+
+    return dbFile;
 }
 
 

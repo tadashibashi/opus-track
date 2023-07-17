@@ -1,11 +1,24 @@
+<%
+const {user, avatarFile} = locals;
+%>
+
 <section>
     <h1>Edit Profile</h1>
-    <form class="form-control-color" method="POST" action="/profile/update">
-        <label class="form-label">
-            Avatar
-            <input class="form-input" type="file" name="file" />
-        </label>
+    <form class="container-lg" method="POST" action="/profile?_method=PATCH" enctype="multipart/form-data">
+        <label class="form-label" for="file">Profile Picture</label>
+        <input class="form-control" type="file" id="file"  name="profilePic" accept=".png,.jpg,.jpeg" />
+        <p class="text-sm float-end pe-2">max size: 1MB</p>
         <label class="form-label"></label>
-        <img id="profile-image" src="<%=user.avatar%>" />
+        <div id="profile-image-container">
+            <img alt="User profile image" id="profile-image" src="<%=avatarFile%>" />
+        </div>
+        <p class="text-sm text-center">For best results, use a large image with a 1:1 aspect ratio</p>
+
+        <label class="form-label" for="username">Username</label>
+        <input id="username" class="form-control" name="username" type="text" required value="<%=user.username%>" pattern="\s*\w+\s*">
+        <p class="text-sm float-start text-start">your unique profile url: <code class="text-sm rounded-1 bg-light">/profile/a/<span id="user-link"><%=user.username%></span></code></p>
+        <p class="text-sm text-end">must contain no spaces</p>
+
+        <button class="btn btn-primary">Update</button>
     </form>
 </section>

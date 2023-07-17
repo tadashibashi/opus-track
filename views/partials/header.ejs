@@ -1,15 +1,23 @@
-<!-- depends on Bootstrap 5 -->
 <%
+const {user} = locals;
 let logText = user ? "Logout" : "Login"
 let logLink = user ? "/auth/logout" : "/auth/google"
 %>
 
 <nav class="navbar container">
     <div class="navbar-brand">
-
-        <h2><a href="/">Opus Track</a></h2>
+        <h2><a href="/profile">Opus Track</a></h2>
     </div>
+    <% if (user) { %>
+    <div>
+        <a href="/profile">Portfolio</a>
+    </div>
+    <div>
+        <a href="/profile/edit">Profile</a>
+    </div>
+    <% } %>
 
-    <div>Profile</div>
-    <div><a href="<%=logLink%>"><%=logText%></a></div>
+    <div>
+        <a href="<%=logLink%>"><%=logText%></a>
+    </div>
 </nav>

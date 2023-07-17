@@ -2,10 +2,10 @@ import mongoose, {Schema, Types} from "mongoose";
 
 // ===== Interfaces ============================================
 
-interface ICredit {
+export interface ICredit {
     role: string;
     name: string;
-    userId: Types.ObjectId | null;
+    userId?: Types.ObjectId | null;
 }
 export type CreditSubDoc = Types.Subdocument<ICredit>;
 
@@ -13,7 +13,6 @@ export type CreditSubDoc = Types.Subdocument<ICredit>;
 interface IMeta {
     title: string;
     credits: Types.Subdocument<ICredit>[];
-    userId: Types.ObjectId;
 }
 export type MetaSubDoc = Types.Subdocument<IMeta>;
 
@@ -33,7 +32,7 @@ const creditSchema = new Schema<ICredit>({
     role: String,
     name: String,
     userId: { // if referring to a specific Opus Track user, may be null: link to profile, etc.
-        type: Schema.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
         nullable: true,
         default: null,
@@ -66,14 +65,18 @@ const assetSchema = new Schema({
         required: true,
     },
     user: {
-        type: Schema.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
         required: false, // just in case we want to create assets for some other purpose...
         nullable: true,
         default: null,
     },
+    cover: {
+        type: Schema.Types.ObjectId,
+        ref: "Asset",
+    },
     file: {
-        type: Schema.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "File",
         required: true,
     },

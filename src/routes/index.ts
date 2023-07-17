@@ -2,12 +2,11 @@ import {Router} from "express";
 const router = Router();
 
 import {render} from "../pages";
+import {ServerError} from "../errors/ServerError";
 
-// user home. TODO: add to user route?
-router.get("/home", (req, res) => {
-    res.render("driver");
+router.get("/errortest", (req, res, next) => {
+    next(new ServerError(500,  "Error Test!"));
 });
-
 
 router.get("/", (req, res) => {
     render("landing", req, res, {

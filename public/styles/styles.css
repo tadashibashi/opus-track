@@ -1,3 +1,29 @@
+@font-face {
+    font-family: "Noto Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/NotoSans-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: url(/fonts/NotoSans-Italic.ttf);
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    font-style: normal;
+    font-weight: 800;
+    src: url(/fonts/NotoSans-Bold.ttf);
+}
+
+
+:root {
+    --color-faded: #c0c0c0;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -12,17 +38,20 @@ body {
     width: 100%;
     height: 100%;
 
-    display: grid;
-    grid-template-areas:
-    "header"
-    "main"
-    "footer";
+    /*display: grid;*/
+    /*grid-template-areas:*/
+    /*"header"*/
+    /*"main"*/
+    /*"footer";*/
 
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
+    /*grid-template-columns: 1fr;*/
+    /*grid-template-rows: auto 1fr auto;*/
 
-    align-content: center;
+    /*align-content: center;*/
     background: #eaeaea;
+
+    font-family: "Noto Sans", Arial, serif;
+    overflow-x: hidden;
 }
 
 nav {
@@ -31,6 +60,8 @@ nav {
 
 header {
     grid-area: header;
+    min-height: 100px;
+    overflow: hidden;
 }
 
 main {
@@ -44,4 +75,9 @@ footer {
 
 footer p {
     font-size: max(min(4vmin, .5rem), 1vmin);
+}
+
+.text-sm {
+    font-size: .8rem;
+    color: var(--color-faded);
 }

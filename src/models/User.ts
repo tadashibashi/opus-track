@@ -1,4 +1,4 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, {Schema, Types} from "mongoose";
 
 export interface IUser {
     firstName: string;
@@ -7,7 +7,7 @@ export interface IUser {
     googleId: string;
     email: string;
     avatar: string;
-    avatarFile: string;
+    avatarFile: Types.ObjectId | null;
     displayName: string;
     emailVerified: boolean;
     usertype: ("admin" | "user")[];
@@ -37,7 +37,7 @@ export const userSchema = new Schema({
     email: String,
     avatar: String,
     avatarFile: {
-        type: Schema.ObjectId,
+        type: Schema.Types.ObjectId,
         nullable: true,
         default: null,
     },
@@ -55,7 +55,7 @@ export const userSchema = new Schema({
     timestamps: true,
 });
 
-const User = mongoose.model("User", userSchema);
+export const User = mongoose.model("User", userSchema);
 
 export type UserDocument = mongoose.HydratedDocument<IUser>;
 

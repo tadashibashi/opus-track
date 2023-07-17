@@ -13,7 +13,7 @@ export function authorize(opts: AuthorizeOptions = {failureRedirect: "/"}) {
         } else {
             if (opts.failureRedirect)
                 res.redirect(opts.failureRedirect);
-            res.end("unauthorized");
+            res.redirect("/");
         }
     }
 }

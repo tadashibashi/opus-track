@@ -1,13 +1,13 @@
 import mongoose, {Schema, Types} from "mongoose";
 
-interface IProfile {
+interface IPortfolio {
     assets: Types.ObjectId,
-    user: Types.ObjectId,
+    owner: Types.ObjectId,
     createdAt: Date,
     updatedAt: Date,
 }
 
-export type ProfileDocument = mongoose.HydratedDocument<IProfile>;
+export type ProfileDocument = mongoose.HydratedDocument<IPortfolio>;
 
 const profileSchema = new Schema({
     assets: {
@@ -23,4 +23,8 @@ const profileSchema = new Schema({
     timestamps: true,
 });
 
-export const Profile = mongoose.model("Profile", profileSchema);
+export type PortfolioDocument = mongoose.HydratedDocument<IPortfolio>;
+
+export const Portfolio = mongoose.model("Profile", profileSchema);
+
+export default Portfolio;

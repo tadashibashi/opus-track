@@ -37,11 +37,11 @@ const commentSchema = new Schema<IComment>({
         default: { x: 0, y: 0, width: 0, height: 0 },
     },
     author: {
-        type: Schema.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
     },
     asset: {
-        type: Schema.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Asset",
     },
     isPublic: {

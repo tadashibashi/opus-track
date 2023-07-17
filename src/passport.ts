@@ -6,6 +6,11 @@ import User from "./models/User";
 
 import {Express} from "express";
 import session from "express-session";
+import MemoryStoreLib from "memorystore";
+const MemoryStore = MemoryStoreLib(session);
+
+import sha256 from "crypto-js/sha256";
+import {Portfolio} from "./models/Portfolio";
 
 export function setupPassport(server: Express) {
     passport.use(new GoogleStrategy({
@@ -21,15 +26,28 @@ export function setupPassport(server: Express) {
                 const email = profile.emails?.at(0) as {value: string, verified: boolean};
 
                 if (!user) {
-                    user = await User.create({
+
+                    user = new User({
                         googleId: profile.id,
                         firstName: profile.name?.givenName || "",
                         lastName: profile.name?.familyName || "",
-                        username: profile.username || profile.displayName, // May be undefined? It will throw mongoose validation error, if so.
+                        username: "user" + sha256(profile.id),
                         email: email.value || "",
                         emailVerified: email.verified || false,
                         avatar: profile.photos?.at(0)?.value || "",
                     });
+
+                    const portfolio = new Portfolio({
+                        owner: user._id,
+                        assets: [],
+                    });
+
+
+                    await user.save();
+
+                    // if for some reason portfolio fails to create,
+                    // user can always create it later in profile...
+                    await portfolio.save();
                 }
 
                 console.log("User logged in: ", user);
@@ -63,6 +81,9 @@ export function setupPassport(server: Express) {
         secret: getEnv("SESSION_SECRET"),
         resave: false,
         saveUninitialized: true,
+        store: new MemoryStore({
+            checkPeriod: 86400000
+        }),
     }));
 
     server.use(passport.initialize());
