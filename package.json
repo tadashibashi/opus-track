@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "npm run serve:prod",
-    "serve:dev": "nodemon -e ts,tsx src/main.ts",
+    "serve:dev": "nodemon -e ts,tsx --watch . --watch .env --ignore 'frontend' src/main.ts",
     "serve:prod": "ts-node --transpile-only src/main.ts",
     "update-antivirus": "freshclam",
     "av-install": "brew install clamav",
@@ -13,10 +13,12 @@
   "devDependencies": {
     "@types/clamscan": "^2.0.4",
     "@types/cookie-parser": "^1",
+    "@types/crypto-js": "^4.1.1",
     "@types/ejs": "^3.1.2",
     "@types/express": "^4",
     "@types/express-session": "^1",
     "@types/jest": "^29.5.3",
+    "@types/jquery": "^3.5.16",
     "@types/morgan": "^1",
     "@types/multer": "^1",
     "@types/node": "^20.4.0",
@@ -30,6 +32,7 @@
   "dependencies": {
     "clamscan": "^2.1.2",
     "cookie-parser": "^1.4.6",
+    "crypto-js": "^4.1.1",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
@@ -37,6 +40,7 @@
     "googleapis": "105",
     "helmet": "^7.0.0",
     "htmx.org": "^1.9.2",
+    "memorystore": "^1.6.7",
     "mongoose": "^7.3.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
