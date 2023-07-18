@@ -140,14 +140,14 @@ class PageEngine {
         }
 
         vars.scripts = [];
-        if (fs.existsSync(path.join(process.cwd(), "public/scripts/pages/" + page + ".js")))
+        if (fs.existsSync(path.join(__dirname, "../public/scripts/pages/" + page + ".js")))
             vars.scripts.push("/scripts/pages/" + page + ".js");
 
         if (opts?.scripts)
-            opts.scripts.forEach(scriptFile => vars.scripts!.push("/scripts/" + scriptFile));
+            opts.scripts.forEach(scriptFile => vars.scripts!.push(scriptFile));
 
         vars.css = [];
-        if (fs.existsSync(path.join(process.cwd(), "public/styles/pages/" + page + ".css")))
+        if (fs.existsSync(path.join(__dirname, "../public/styles/pages/" + page + ".css")))
             vars.css.push("/styles/pages/" + page + ".css");
         if (opts?.css)
             opts.css.forEach(styleFile => vars.css!.push(styleFile));
