@@ -17,9 +17,9 @@
 .env
 credentials.json
 
-# Build files
-public/scripts/*
-!public/scripts/thirdparty
+# # Deploy Build files
+# public/scripts/*
+# !public/scripts/thirdparty
 
 # Local storage
 public/files/users/*
