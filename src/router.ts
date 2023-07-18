@@ -19,7 +19,7 @@ import errorRouter from "./routes/error";
 router.use("/", indexRouter);
 router.use("/auth", authRouter);
 router.use("/files", filesRouter);
-router.use("/account", accountRouter);
+router.use("/accounts", accountRouter);
 router.use("/portfolio", portfolioRouter);
 router.use("/assets", assetsRouter);
 router.use("/", errorRouter);

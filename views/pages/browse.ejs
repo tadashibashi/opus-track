@@ -1,0 +1,19 @@
+<%
+const {users} = locals;
+%>
+
+<section class="container">
+    <h1 class="mb-4">Artists</h1>
+    <section id="artists">
+        <% users.forEach(user => { %>
+        <div class="user-container" data-bs-toggle="tooltip" title="<%=user.displayName || user.username%>">
+            <a href="/portfolio/a/<%=user.username%>">
+                <div class="profile-pic-container">
+                    <img src="<%=user.avatarFile ? user.avatarFile.path : user.avatar %>" />
+                </div>
+            </a>
+        </div>
+        <% }); %>
+
+    </section>
+</section>

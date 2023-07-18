@@ -7,7 +7,6 @@ const upload = multer();
 const router = Router();
 
 router.get("/",
-    authorize(),
     userCtrl.index);
 
 router.get("/edit",

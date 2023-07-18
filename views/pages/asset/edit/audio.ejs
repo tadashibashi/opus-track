@@ -1,5 +1,5 @@
 <%
-const {user, coverFilePath, asset, assetFilePath} = locals;
+const {user, coverFilePath, asset, assetFile} = locals;
 console.log(coverFilePath);
 %>
 
@@ -7,9 +7,10 @@ console.log(coverFilePath);
 
 <section class="container">
     <a class="link mb-2" href="/portfolio">back to portfolio</a>
-    <div>
+    <div class="position-relative">
         <!-- Edit audio asset -->
         <h1>Edit Track</h1>
+        <a id="download-btn" class="btn" href="<%=assetFile.path%>" download="<%=assetFile.filename%>"><img src="/images/feather/download.svg"/></a>
         <form class="container-lg" method="post" action="/assets/<%= asset._id %>?_method=PUT" enctype="multipart/form-data">
             <div class="mb-4">
                 <label class="form-label" for="title">Title</label>
@@ -21,18 +22,18 @@ console.log(coverFilePath);
                 </div>
                 <div id="upload-file-container">
                     <div>
-                        <label class="form-label" for="imageFile">Cover Image</label>
+                        <label class="form-label" for="imageFile">Replace Cover Image</label>
                         <input class="form-control" type="file" id="imageFile" name="imageUpload" accept=".jpeg,.jpg,.png"/>
                     </div>
                     <div>
-                        <label class="form-label" for="audioFile">Audio File</label>
+                        <label class="form-label" for="audioFile">Replace Audio File</label>
                         <input class="form-control" type="file" id="audioFile" name="audioUpload" accept=".wav,.mp3,.ogg">
                     </div>
                 </div>
             </div>
 
             <!-- Audio Player -->
-            <div class="audio-player mb-4" data-src="<%=assetFilePath%>">
+            <div class="audio-player mb-4" data-src="<%=assetFile.path%>">
                 <div class="play-button-container">
                     <div class="play-button">
                         <img src="/images/feather/play.svg" />
@@ -79,7 +80,10 @@ console.log(coverFilePath);
 
             <input name="type" type="text" hidden required value="Audio" readonly/>
 
-            <input type="submit" class="btn btn-primary" value="Update Track">
+            <div id="form-button-container">
+                <input type="submit" class="btn btn-primary" value="Update Track">
+                <a href="/assets/<%=asset._id%>?_method=DELETE"><button class="delete-btn btn btn-outline-danger" type="button">Delete Track</button></a>
+            </div>
 
 
         </form>

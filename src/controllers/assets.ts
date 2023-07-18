@@ -55,19 +55,22 @@ export async function deleteAsset(id: string) {
     }
 
 
-    // delete cover image file
-    try {
-        result = await deleteFile(asset.cover.toString());
-    } catch(err) {
-        error = err;
+    // delete cover image file, if there is one
+    if (asset.cover) {
+        try {
+            result = await deleteFile(asset.cover.toString());
+        } catch(err) {
+            error = err;
+        }
+        // error check
+        if (!result || error) {
+            console.warn(`Warning. Deleted Asset ${asset._id}, but could not delete its cover image.`);
+            if (error)
+                console.error(error);
+            return false;
+        }
     }
-    // error check
-    if (!result || error) {
-        console.warn(`Warning. Deleted Asset ${asset._id}, but could not delete its cover image.`);
-        if (error)
-            console.error(error);
-        return false;
-    }
+
 
     // delete asset document
     try {
@@ -377,19 +380,16 @@ async function _edit(req: Request, res: Response, next: NextFunction) {
     }
 
     // get asset file path
-    let assetFilePath: string | null = null;
+    let assetFile: FileDocument | null= null;
     try {
-        const assetFile: FileDocument | null = await File.findById(asset.file);
-        if (assetFile) {
-            assetFilePath = assetFile.path;
-        }
+        assetFile  = await File.findById(asset.file);
     } catch(err) {
         next(err);
         return;
     }
 
-    if (!assetFilePath) {
-        next(new Error("Failed to get asset file path"));
+    if (!assetFile) {
+        next(new Error("Failed to get asset file"));
         return;
     }
 
@@ -412,7 +412,7 @@ async function _edit(req: Request, res: Response, next: NextFunction) {
             asset,
             user,
             coverFilePath,
-            assetFilePath,
+            assetFile,
         },
         css,
     });
@@ -447,7 +447,7 @@ async function _delete(req: Request, res: Response, next: NextFunction) {
         next(new ReferenceError("User object was unexpectedly undefined."));
         return;
     }
-    if (user._id !== asset.user._id) {
+    if (user._id.toString() !== asset.user._id.toString()) {
         res.status(403);
         next(new Error("Sorry, you do not have permission to view this content."));
         return;

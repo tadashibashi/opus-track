@@ -33,6 +33,13 @@ const authorized = viewer ? viewer._id.toString() === owner._id.toString() : fal
         <% }); %>
     <% } %>
 
-    <input id="volume-slider" type="range" min="0" max="1"/>
+    <div id="volume-slider-container">
+        <div>
+            <img src="/images/feather/volume.svg"/>
+        </div>
+
+        <input id="volume-slider" orient="vertical" type="range" min="0" max="1" step=".01"/>
+    </div>
+
 
 </section>

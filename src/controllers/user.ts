@@ -1,16 +1,23 @@
 import {NextFunction, Request, Response} from "express";
 import {render} from "../pages";
-
 import User, {UserDocument} from "../models/User";
 import File from "../models/File";
 import {createFile} from "./files";
-import {Portfolio, PortfolioDocument} from "../models/Portfolio";
 import {FileDocument} from "../models/File";
 import fs from "fs";
 
 async function _index(req: Request, res: Response, next: NextFunction) {
-    // todo!!!
-    throw new Error("This route is not implemented yet!");
+
+    try {
+        const users = await User.find({}).populate("avatarFile").limit(24);
+        render("browse", req, res, {
+            locals: {users}
+        });
+    } catch(err) {
+        next(err);
+    }
+
+
 }
 
 async function _edit(req: Request, res: Response, next: NextFunction) {
@@ -128,7 +135,7 @@ async function _patch(req: Request, res: Response, next: NextFunction) {
         next(err);
         return;
     }
-    res.redirect("/account/edit");
+    res.redirect("/accounts/edit");
 }
 
 export default {

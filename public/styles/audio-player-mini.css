@@ -40,6 +40,11 @@
     visibility: visible;
 }
 
+.album-art-container {
+    height: 100%;
+    aspect-ratio: 1/1;
+}
+
 .mini-audio-container .album-art {
     width: 100%;
     aspect-ratio: 1/1;

@@ -1,0 +1,34 @@
+#volume-slider-container {
+    position: absolute;
+    bottom: 1vmin;
+    right: 1vmin;
+    width: max(6vmin, 32px);
+}
+
+#volume-slider-container > div {
+    position: absolute;
+    left: 0;
+    top: 0;
+    aspect-ratio: 1/1;
+
+    border-radius: 50%;
+    background: green;
+
+    display: flex;
+}
+
+#volume-slider-container > div > img {
+    width: max(6vmin, 32px);
+    position: absolute;
+    bottom: 0vmin;
+    left: .25vmin;
+
+}
+
+#volume-slider {
+    -webkit-appearance: slider-vertical;
+    writing-mode: bt-lr;
+    position: relative;
+    left: -1.5vmin;
+    top: -6vmin;
+}

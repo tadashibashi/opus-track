@@ -8,17 +8,17 @@ let logLink = user ? "/auth/logout" : "/auth/google"
     <div class="container">
         <div class="navbar-brand">
             <!-- TODO: change to target user portal home later -->
-            <h3 class="text-lg-center"><a href="/account/edit">OPUS TRACK</a></h3>
+            <h3 class="text-lg-center"><a href="/accounts">OPUS TRACK</a></h3>
         </div>
         <div>
-            <a href="/">Browse</a>
+            <a href="/accounts">Browse</a>
         </div>
         <% if (user) { %>
             <div>
                 <a href="/portfolio">My Portfolio</a>
             </div>
             <div>
-                <a href="/account/edit">Settings</a>
+                <a href="/accounts/edit">Settings</a>
             </div>
         <% } %>
 
