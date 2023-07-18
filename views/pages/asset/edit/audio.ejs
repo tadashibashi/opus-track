@@ -1,16 +1,12 @@
 <%
-const {user, portfolio, avatarPath} = locals;
+const {user, avatarPath, asset} = locals;
 %>
 
 <section class="container">
     <div>
-        <%if (!portfolio) { %>
-            <button class="btn btn-primary"><a href="/portfolio?_method=POST">Create Portfolio</a></button>
-        <% } else { %>
-
-        <!-- Create new asset -->
-        <h1>Add New Track</h1>
-        <form class="container-lg" method="post" action="/portfolio/asset" enctype="multipart/form-data">
+        <!-- Edit audio asset -->
+        <h1>Edit Track</h1>
+        <form class="container-lg" method="post" action="/asset/<%= asset._id %>?_method=PUT" enctype="multipart/form-data">
             <div class="mb-4">
                 <label class="form-label" for="title">Title</label>
                 <input id="title" type="text" class="form-control" name="title" required>
@@ -62,7 +58,6 @@ const {user, portfolio, avatarPath} = locals;
 
 
         </form>
-        <% } %>
     </div>
 
 </section>
