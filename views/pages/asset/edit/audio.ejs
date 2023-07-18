@@ -17,16 +17,16 @@ const {user, coverFilePath, asset, assetFile} = locals;
             </div>
             <div id="cover-image-form-container">
                 <div id="cover-image-container">
-                    <img alt="Asset cover image" id="cover-image" src="<%="/files/" + coverFilePath%>"/>
+                    <img alt="Asset cover image" id="cover-image" src="<%=coverFilePath%>"/>
                 </div>
                 <div id="upload-file-container">
                     <div>
                         <label class="form-label" for="imageFile">Replace Cover Image</label>
-                        <input class="form-control" type="file" id="imageFile" name="imageUpload" accept=".jpeg,.jpg,.png"/>
+                        <input class="form-control" type="file" id="imageFile" name="coverUpload" accept=".jpeg,.jpg,.png"/>
                     </div>
                     <div>
                         <label class="form-label" for="audioFile">Replace Audio File</label>
-                        <input class="form-control" type="file" id="audioFile" name="audioUpload" accept=".wav,.mp3,.ogg">
+                        <input class="form-control" type="file" id="audioFile" name="assetUpload" accept=".wav,.mp3,.ogg">
                     </div>
                 </div>
             </div>

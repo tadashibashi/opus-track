@@ -157,14 +157,14 @@ async function _update(req: Request, res: Response, next: NextFunction) {
             next(new Error("Unknown or unimplemented asset type."));
             return;
     }
-
+    console.log(req.files);
     // handle any new cover file and asset file
     if (req.files && Array.isArray(req.files)) {
         // delete cover file image if a new one is available
         let newCoverImageFile: Express.Multer.File | undefined;
 
         try {
-            newCoverImageFile = req.files.find(file => file.fieldname === "coverImageUpload");
+            newCoverImageFile = req.files.find(file => file.fieldname === "coverUpload");
         } catch(err) {
             next(err);
             return;
@@ -192,6 +192,7 @@ async function _update(req: Request, res: Response, next: NextFunction) {
             // create the new File doc in DB and on filesystem
             let newCoverImageFileDoc: FileDocument | null = null;
             try {
+                console.log("update cover");
                 newCoverImageFileDoc = await createFile(newCoverImageFile, user);
             } catch(err) {
                 next(err);
@@ -201,6 +202,7 @@ async function _update(req: Request, res: Response, next: NextFunction) {
             if (newCoverImageFileDoc) {
                 // success, commit changes
                 asset.cover = newCoverImageFileDoc._id;
+
             } else {
                 next(new Error("Failed to create new cover image file"));
                 return;
@@ -211,7 +213,7 @@ async function _update(req: Request, res: Response, next: NextFunction) {
 
         // handle any new asset file
         let newAssetFile: Express.Multer.File | undefined =
-            req.files.find(file => file.fieldname === "assetFileUpload");
+            req.files.find(file => file.fieldname === "assetUpload");
 
         if (newAssetFile) {
             // delete file to make room for new one
@@ -299,13 +301,15 @@ export async function getCoverFilePath(asset: AssetDocument, user: UserDocument)
     // Get cover file path
     // hmmm it's kind of convoluted to get the album image, we should sum it up in a function
     let coverFilePath: string | null = null;
-    try {
-        const coverFile = await File.findById(asset.cover);
-        if (coverFile)
-            coverFilePath = coverFile.path;
-    } catch(err) {
-        console.error(err);
-        return null;
+    if (asset.cover) {
+        try {
+            const coverFile = await File.findById(asset.cover);
+            if (coverFile)
+                coverFilePath = "/files/" + coverFile.path;
+        } catch(err) {
+            console.error(err);
+            return null;
+        }
     }
 
     if (!coverFilePath) {
@@ -321,7 +325,7 @@ export async function getCoverFilePath(asset: AssetDocument, user: UserDocument)
         } else {
             avatarPath = user.avatar;
         }
-        coverFilePath = avatarPath;
+        coverFilePath = "/files/" + avatarPath;
     }
 
     return coverFilePath;

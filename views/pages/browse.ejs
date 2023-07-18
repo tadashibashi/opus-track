@@ -9,7 +9,7 @@ const {users} = locals;
         <div class="user-container" data-bs-toggle="tooltip" title="<%=user.displayName || user.username%>">
             <a href="/portfolio/a/<%=user.username%>">
                 <div class="profile-pic-container">
-                    <img src="<%=user.avatarFile ? "/files/" + user.avatarFile.fileId : user.avatar %>" />
+                    <img src="<%=user.avatarFile ? "/files/" + user.avatarFile.path : user.avatar %>" />
                 </div>
             </a>
         </div>
