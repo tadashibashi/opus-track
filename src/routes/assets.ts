@@ -26,3 +26,5 @@ router.put("/:id", authorize(), assetsCtrl.update);
 /// @query _redirect will send the page to this address, otherwise it will return to /portfolio
 /// 0 means no errors, anything else means there's an error
 router.delete("/:id", authorize(), assetsCtrl.delete);
+
+export default router;
