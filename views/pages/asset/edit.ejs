@@ -1,0 +1,68 @@
+<%
+const {user, portfolio, avatarPath} = locals;
+%>
+
+<section class="container">
+    <div>
+        <%if (!portfolio) { %>
+            <button class="btn btn-primary"><a href="/portfolio?_method=POST">Create Portfolio</a></button>
+        <% } else { %>
+
+        <!-- Create new asset -->
+        <h1>Add New Track</h1>
+        <form class="container-lg" method="post" action="/portfolio/asset" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label class="form-label" for="title">Title</label>
+                <input id="title" type="text" class="form-control" name="title" required>
+            </div>
+            <div id="cover-image-form-container">
+                <div id="cover-image-container">
+                    <img alt="Asset cover image" id="cover-image" src="<%=avatarPath%>"/>
+                </div>
+                <div id="upload-file-container">
+                    <div>
+                        <label class="form-label" for="imageFile">Cover Image</label>
+                        <input class="form-control" type="file" id="imageFile" name="imageUpload" accept=".jpeg,.jpg,.png"/>
+                    </div>
+                    <div>
+                        <label class="form-label" for="audioFile">Audio File</label>
+                        <input class="form-control" type="file" id="audioFile" name="audioUpload" accept=".wav,.mp3,.ogg" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="audio-player mb-4">
+                <div class="play-button-container">
+                    <div class="play-button">
+                        <img src="/images/feather/play.svg" />
+                    </div>
+                </div>
+                <div class="audio-region">
+                    <canvas></canvas>
+                </div>
+            </div>
+
+            <h4>Credits</h4>
+            <div id="credits" class="form-control">
+                <div class="btn-group-sm">
+                    <button id="remove-credit" class="float-end btn btn-light" type="button">-</button>
+                    <button id="add-credit" class="float-end btn btn-light" type="button">+</button>
+                </div>
+
+                <div>
+                    <label class="form-label">Name<input required class="form-control" type="text" name="credits-name" value="<%=user.firstName + " " + user.lastName%>"/></label>
+                    <label class="form-label">Role<input required class="form-control" type="text" name="credits-role" value="Artist"/></label>
+                </div>
+
+            </div>
+
+            <input name="type" type="text" hidden required value="Audio" readonly/>
+
+            <input type="submit" class="btn btn-primary" value="Add New Track">
+
+
+        </form>
+        <% } %>
+    </div>
+
+</section>
