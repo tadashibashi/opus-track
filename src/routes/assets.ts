@@ -4,6 +4,7 @@ import assetsCtrl from "../controllers/assets";
 import {authorize} from "../middleware/authorize";
 
 const router = Router();
+const upload = multer();
 
 /// show one asset to the user
 /// @param :id asset id
@@ -19,7 +20,7 @@ router.get("/:id/edit", authorize(), assetsCtrl.edit);
 /// @param :id asset id
 /// @query _redirect will send the page to this address, otherwise it will return to /portfolio
 /// 0 means no errors, anything else means there's an error
-router.put("/:id", authorize(), assetsCtrl.update);
+router.put("/:id", authorize(), upload.any(), assetsCtrl.update);
 
 /// delete an asset
 /// @param :id asset id
