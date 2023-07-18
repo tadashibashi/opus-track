@@ -60,7 +60,7 @@ export async function deleteFile(id: string) {
  * @returns promise resolving to true on successful file write, and false on failure to write.
  * On failure, both database data and local file are cleaned up if any was written.
  */
-export async function createFile(file: Express.Multer.File, user: UserDocument, folder: string) {
+export async function createFile(file: Express.Multer.File, user: UserDocument, folder: string = process.cwd() + "/public/files/users/") {
     const result = (getEnv("NODE_ENV") === "development") ? // TODO: workaround for class project, make sure to actually import clamd into the environment for production!!!
         await scanner.scanFile(file.buffer) : {isInfected: false};
 

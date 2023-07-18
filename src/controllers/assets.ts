@@ -153,11 +153,92 @@ async function _update(req: Request, res: Response, next: NextFunction) {
             return;
     }
 
-    // find cover file and asset file
-    if (req.files) {
+    // handle any new cover file and asset file
+    if (req.files && Array.isArray(req.files)) {
         // delete cover file image if a new one is available
+        let newCoverImageFile: Express.Multer.File | undefined;
 
-        // delete file if a new one is available
+        try {
+            newCoverImageFile = req.files.find(file => file.fieldname === "coverImageUpload");
+        } catch(err) {
+            next(err);
+            return;
+        }
+
+        if (newCoverImageFile) {
+
+            // delete any existing cover image File
+            if (asset.cover) {
+                let result: boolean = false;
+                try {
+                    result = await deleteFile(asset.cover.toString());
+                } catch(err) {
+                    next(err);
+                    return;
+                }
+
+                if (!result) {
+                    // should we allow memory leak for good user exp?
+                    next(new Error("Prevented overwrite, since original cover image could not be deleted."));
+                    return;
+                }
+            }
+
+            // create the new File doc in DB and on filesystem
+            let newCoverImageFileDoc: FileDocument | null = null;
+            try {
+                newCoverImageFileDoc = await createFile(newCoverImageFile, user);
+            } catch(err) {
+                next(err);
+                return;
+            }
+
+            if (newCoverImageFileDoc) {
+                // success, commit changes
+                asset.cover = newCoverImageFileDoc._id;
+            } else {
+                next(new Error("Failed to create new cover image file"));
+                return;
+            }
+        }
+
+
+
+        // handle any new asset file
+        let newAssetFile: Express.Multer.File | undefined =
+            req.files.find(file => file.fieldname === "assetFileUpload");
+
+        if (newAssetFile) {
+            // delete file to make room for new one
+            let result = false;
+            try {
+                result = await deleteFile(asset.file.toString());
+            } catch(err) {
+                next(err);
+                return;
+            }
+
+            if (!result) {
+                next(new Error("Failed to delete pre-existing asset File"));
+                return;
+            }
+
+            // create new File and save on filesystem
+            let newAssetFileDoc: FileDocument | null;
+            try {
+                newAssetFileDoc = await createFile(newAssetFile, user);
+            } catch(err) {
+                next(err);
+                return;
+            }
+
+            if (newAssetFileDoc) {
+                asset.file = newAssetFileDoc._id;
+            } else {
+                next(new Error("Failed to create new asset File db document and file."));
+                return;
+            }
+        }
     }
 
     // update metadata
