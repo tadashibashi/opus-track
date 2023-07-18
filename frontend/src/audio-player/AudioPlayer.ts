@@ -71,10 +71,12 @@ export class AudioPlayer {
         // ===== set up listeners =====
 
         music.source.mediaElement.addEventListener("loadstart", this.onMusicPlayerHandler);
-        music.source.mediaElement.addEventListener("loadedmetadata", () => {
-            const duration = music.source.mediaElement.duration;
-            timeEl.children[1].innerHTML = Math.floor(duration/60).toString().padStart(1, "0") + ":" +
-                (Math.floor(duration) % 60).toString().padStart(2, "0");
+        music.source.mediaElement.addEventListener("loadeddata", () => {
+            if (timeEl.children.length > 1) {
+                const duration = music.source.mediaElement.duration;
+                timeEl.children[1].innerHTML = Math.floor(duration/60).toString().padStart(1, "0") + ":" +
+                    (Math.floor(duration) % 60).toString().padStart(2, "0");
+            }
         });
         music.source.mediaElement.addEventListener("playing", this.onMusicPlayerHandler);
         music.source.mediaElement.addEventListener("pause", this.onMusicPlayerHandler);
