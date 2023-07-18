@@ -1,6 +1,5 @@
 <%
 const {user, coverFilePath, asset, assetFile} = locals;
-console.log(coverFilePath);
 %>
 
 
@@ -10,7 +9,7 @@ console.log(coverFilePath);
     <div class="position-relative">
         <!-- Edit audio asset -->
         <h1>Edit Track</h1>
-        <a id="download-btn" class="btn" href="<%=assetFile.path%>" download="<%=assetFile.filename%>"><img src="/images/feather/download.svg"/></a>
+        <a id="download-btn" class="btn" href="<%="/files/" + assetFile.path%>" download="<%=assetFile.filename%>"><img src="/images/feather/download.svg"/></a>
         <form class="container-lg" method="post" action="/assets/<%= asset._id %>?_method=PUT" enctype="multipart/form-data">
             <div class="mb-4">
                 <label class="form-label" for="title">Title</label>
@@ -18,7 +17,7 @@ console.log(coverFilePath);
             </div>
             <div id="cover-image-form-container">
                 <div id="cover-image-container">
-                    <img alt="Asset cover image" id="cover-image" src="<%=coverFilePath%>"/>
+                    <img alt="Asset cover image" id="cover-image" src="<%="/files/" + coverFilePath%>"/>
                 </div>
                 <div id="upload-file-container">
                     <div>
@@ -33,7 +32,7 @@ console.log(coverFilePath);
             </div>
 
             <!-- Audio Player -->
-            <div class="audio-player mb-4" data-src="<%=assetFile.path%>">
+            <div class="audio-player mb-4" data-src="<%="/files/" + assetFile.path%>">
                 <div class="play-button-container">
                     <div class="play-button">
                         <img src="/images/feather/play.svg" />

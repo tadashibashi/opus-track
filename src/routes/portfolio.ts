@@ -1,8 +1,7 @@
 import {Router} from "express";
 import portfolioCtrl from "../controllers/portfolio";
 import {authorize} from "../middleware/authorize";
-import Multer from "multer";
-const upload = Multer();
+import {upload} from "../util/upload";
 
 const router = Router();
 

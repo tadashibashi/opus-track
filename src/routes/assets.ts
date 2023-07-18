@@ -1,10 +1,10 @@
 import {Router} from "express";
-import multer from "multer";
+import {upload} from "../util/upload";
 import assetsCtrl from "../controllers/assets";
 import {authorize} from "../middleware/authorize";
 
 const router = Router();
-const upload = multer();
+
 
 /// show one asset to the user
 /// @param :id asset id

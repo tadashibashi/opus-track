@@ -219,8 +219,8 @@ async function _main(req: Request, res: Response, next: NextFunction) {
         for (let i = 0; i < portfolio.assets.length; ++i) {
             const coverArtFile = await File.findById(populated.assets[i].cover);
             const assetFile = await File.findById(populated.assets[i].file);
-            coverArtSrcs.push(coverArtFile?.path || "");
-            assetFilePaths.push(assetFile?.path || "");
+            coverArtSrcs.push(coverArtFile ? "/files/" + coverArtFile.path : "");
+            assetFilePaths.push(assetFile ? "/files/" + assetFile.path : "");
         }
     }
 

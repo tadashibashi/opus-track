@@ -88,8 +88,8 @@ export async function createAsset(
     type: AssetType, title: string, credits: ICredit[],
     file: Express.Multer.File, coverImage: Express.Multer.File | undefined, user: UserDocument) {
 
-    const userFileFolder = process.cwd() + "/public/files/users/" + user._id + "/";
-    const fileDoc = await createFile(file, user, userFileFolder);
+    //const userFileFolder = process.cwd() + "/public/files/users/" + user._id + "/";
+    const fileDoc = await createFile(file, user);
     if (fileDoc === null) {
         return null;
     }
@@ -97,7 +97,7 @@ export async function createAsset(
     let imageDoc: FileDocument | null = null;
     if (coverImage) {
         try {
-            imageDoc = await createFile(coverImage, user, userFileFolder);
+            imageDoc = await createFile(coverImage, user);
         } catch(err) {
             console.error(err);
             await deleteFile(fileDoc._id.toString());

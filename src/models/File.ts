@@ -10,6 +10,7 @@ export interface IFile {
     mimetype: string,
     size: number,
     user: Types.ObjectId,
+    fileId: Types.ObjectId,
     createdAt: Date,
     updatedAt: Date,
 }
@@ -35,7 +36,8 @@ const fileSchema = new Schema<IFile>({
     user: {
         type: Schema.Types.ObjectId,
         ref: "User"
-    }
+    },
+    fileId: Schema.Types.ObjectId,
 }, {
     timestamps: true,
 });

@@ -4,12 +4,14 @@ import File from "./src/models/File";
 import User from "./src/models/User";
 import Asset from "./src/models/Asset";
 import Portfolio from "./src/models/Portfolio";
+import {getGfs} from "./src/util/upload";
+import mongoose from "mongoose";
 
 const m = {
     File,
     User,
 };
-
+let gfs: mongoose.mongo.GridFSBucket | null = null;
 async function main() {
 
     // Set up mongoose
@@ -20,6 +22,7 @@ async function main() {
             console.error(e.message);
         throw e;
     }
+    gfs = getGfs();
 }
 
 main()

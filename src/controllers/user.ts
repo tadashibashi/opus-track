@@ -5,6 +5,7 @@ import File from "../models/File";
 import {createFile} from "./files";
 import {FileDocument} from "../models/File";
 import fs from "fs";
+import {getGfs} from "../util/upload";
 
 async function _index(req: Request, res: Response, next: NextFunction) {
 
@@ -32,7 +33,7 @@ async function _edit(req: Request, res: Response, next: NextFunction) {
         const avatarFile = await File.findById(user.avatarFile);
 
         if (avatarFile) {
-            avatarPath = avatarFile.path;
+            avatarPath = "/files/" + avatarFile.path;
         }
     }
 
@@ -60,7 +61,6 @@ const allowableMimeTypes = [
 ];
 
 async function _patch(req: Request, res: Response, next: NextFunction) {
-
 
     const user: UserDocument = req.user;
     if (!user) {
@@ -98,9 +98,9 @@ async function _patch(req: Request, res: Response, next: NextFunction) {
 
     if (req.file && allowableMimeTypes.some(type => req.file!.mimetype === type)) {
         let fileDoc: FileDocument | null = null;
-        const folderPath = process.cwd() + "/public/files/users/" + user._id + "/";
+        //const folderPath = process.cwd() + "/public/files/users/" + user._id + "/";
         try {
-            fileDoc = await createFile(req.file, user, folderPath);
+            fileDoc = await createFile(req.file, user);
         } catch(err) {
             next(err);
         }
@@ -114,8 +114,7 @@ async function _patch(req: Request, res: Response, next: NextFunction) {
             try {
                 const file = await File.findById(user.avatarFile);
                 if (file) {
-                    fs.rm(process.cwd() + "/public" + file.path, () => console.log("deleting file at " + file.path));
-                    await File.deleteOne({_id: file._id});
+                    await getGfs().delete(file.fileId);
                 }
             } catch(err) {
                 await File.deleteOne(fileDoc._id);

@@ -29,4 +29,11 @@ function main() {
             timeEls[i] as HTMLElement,
             playCallback));
     });
+
+    const volumeSliderEl = document.getElementById("volume-slider") as HTMLInputElement;
+    volumeSliderEl.addEventListener("input", evt => {
+        engine.busses.master.postGain.gain.value = parseFloat(volumeSliderEl.value);
+    });
+
+    engine.busses.master.postGain.gain.value = parseFloat(volumeSliderEl.value);
 }
