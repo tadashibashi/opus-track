@@ -289,12 +289,41 @@ function _edit(req: Request, res: Response, next: NextFunction) {
 }
 
 async function _delete(req: Request, res: Response, next: NextFunction) {
+    // ensure assetId exists
     const assetId = req.params["id"];
     if (!assetId) {
         next(ReferenceError("Param :id was undefined"));
         return;
     }
 
+    // make sure asset exists
+    let asset: AssetDocument | null;
+    try {
+        asset = await Asset.findById(assetId);
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    if (!asset) {
+        next(new ReferenceError("Asset with id: " + assetId + ", " +
+            "does not exist in database."));
+        return;
+    }
+
+    // make sure asset is owned by the user
+    const user: UserDocument = req.user;
+    if (!user) {
+        next(new ReferenceError("User object was unexpectedly undefined."));
+        return;
+    }
+    if (user._id !== asset.user._id) {
+        res.status(403);
+        next(new Error("Sorry, you are not allowed to access this content."));
+        return;
+    }
+
+    // delete the asset
     let result: boolean = false;
     try {
         result = await deleteAsset(assetId);

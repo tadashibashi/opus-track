@@ -1,6 +1,7 @@
 import {Router} from "express";
 import multer from "multer";
 import assetsCtrl from "../controllers/assets";
+import {authorize} from "../middleware/authorize";
 
 const router = Router();
 
@@ -12,16 +13,16 @@ const router = Router();
 /// show the editor tools to make a put request
 /// @param :id asset id
 /// renders a view depending on asset type - for now, only audio.
-router.get("/:id/edit", assetsCtrl.edit);
+router.get("/:id/edit", authorize(), assetsCtrl.edit);
 
 /// update an asset
 /// @param :id asset id
 /// @query _redirect will send the page to this address, otherwise it will return to /portfolio
 /// 0 means no errors, anything else means there's an error
-router.put("/:id", assetsCtrl.update);
+router.put("/:id", authorize(), assetsCtrl.update);
 
 /// delete an asset
 /// @param :id asset id
 /// @query _redirect will send the page to this address, otherwise it will return to /portfolio
 /// 0 means no errors, anything else means there's an error
-router.delete("/:id", assetsCtrl.delete);
+router.delete("/:id", authorize(), assetsCtrl.delete);
