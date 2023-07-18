@@ -1,19 +1,23 @@
 <%
-const {user, avatarPath, asset} = locals;
+const {user, coverFilePath, asset, assetFilePath} = locals;
+console.log(coverFilePath);
 %>
 
+
+
 <section class="container">
+    <a class="link mb-2" href="/portfolio">back to portfolio</a>
     <div>
         <!-- Edit audio asset -->
         <h1>Edit Track</h1>
-        <form class="container-lg" method="post" action="/asset/<%= asset._id %>?_method=PUT" enctype="multipart/form-data">
+        <form class="container-lg" method="post" action="/assets/<%= asset._id %>?_method=PUT" enctype="multipart/form-data">
             <div class="mb-4">
                 <label class="form-label" for="title">Title</label>
-                <input id="title" type="text" class="form-control" name="title" required>
+                <input id="title" type="text" class="form-control" name="title" value="<%=asset.meta.title%>" required>
             </div>
             <div id="cover-image-form-container">
                 <div id="cover-image-container">
-                    <img alt="Asset cover image" id="cover-image" src="<%=avatarPath%>"/>
+                    <img alt="Asset cover image" id="cover-image" src="<%=coverFilePath%>"/>
                 </div>
                 <div id="upload-file-container">
                     <div>
@@ -22,12 +26,13 @@ const {user, avatarPath, asset} = locals;
                     </div>
                     <div>
                         <label class="form-label" for="audioFile">Audio File</label>
-                        <input class="form-control" type="file" id="audioFile" name="audioUpload" accept=".wav,.mp3,.ogg" required>
+                        <input class="form-control" type="file" id="audioFile" name="audioUpload" accept=".wav,.mp3,.ogg">
                     </div>
                 </div>
             </div>
 
-            <div class="audio-player mb-4">
+            <!-- Audio Player -->
+            <div class="audio-player mb-4" data-src="<%=assetFilePath%>">
                 <div class="play-button-container">
                     <div class="play-button">
                         <img src="/images/feather/play.svg" />
@@ -39,22 +44,42 @@ const {user, avatarPath, asset} = locals;
             </div>
 
             <h4>Credits</h4>
-            <div id="credits" class="form-control">
+            <div class="form-control">
                 <div class="btn-group-sm">
                     <button id="remove-credit" class="float-end btn btn-light" type="button">-</button>
                     <button id="add-credit" class="float-end btn btn-light" type="button">+</button>
                 </div>
 
-                <div>
-                    <label class="form-label">Name<input required class="form-control" type="text" name="credits-name" value="<%=user.firstName + " " + user.lastName%>"/></label>
-                    <label class="form-label">Role<input required class="form-control" type="text" name="credits-role" value="Artist"/></label>
+                <div id="credits">
+                    <% if (asset.meta.credits.length === 0) { %>
+                        <div>
+                            <label class="form-label">Name<input required class="form-control" type="text" name="credits-name" value="<%= user.firstName + " " + user.lastName %>"/></label>
+                            <label class="form-label">Role<input required class="form-control" type="text" name="credits-role" value="Artist"/></label>
+                        </div>
+                    <% } %>
+                    <% asset.meta.credits.forEach((credit, i) => { %>
+                        <% if (i === 0) { %>
+                            <div>
+                                <!-- Only add label names on the first pass -->
+                                <label class="form-label">Name<input required class="form-control" type="text" name="credits-name" value="<%= credit.name %>"/></label>
+                                <label class="form-label">Role<input required class="form-control" type="text" name="credits-role" value="<%= credit.role %>"/></label>
+                            </div>
+
+                        <% } else { %>
+                            <div>
+                                <label><input required class="form-control" type="text" name="credits-name" value="<%= credit.name %>"/></label>
+                                <label><input required class="form-control" type="text" name="credits-role" value="<%= credit.role %>"/></label>
+                            </div>
+
+                        <% }%>
+                    <% }); %>
                 </div>
 
             </div>
 
             <input name="type" type="text" hidden required value="Audio" readonly/>
 
-            <input type="submit" class="btn btn-primary" value="Add New Track">
+            <input type="submit" class="btn btn-primary" value="Update Track">
 
 
         </form>

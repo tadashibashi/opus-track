@@ -137,7 +137,8 @@ async function _update(req: Request, res: Response, next: NextFunction) {
 
     // ensure the owning user is the one updating this asset!
     const user = req.user;
-    if (!user || user._id !== asset.user) {
+    if (!user || user._id.toString() !== asset.user.toString()) {
+
         if (!user) res.status(401); else res.status(403);
 
         next(new Error("Sorry, you do not have permission to view this content."));
@@ -245,26 +246,30 @@ async function _update(req: Request, res: Response, next: NextFunction) {
     // update metadata
     // collect credits
     const credits: ICredit[] = [];
-    if (req.body["credit-name"] && req.body["credit-role"]) {
-        if (Array.isArray(req.body["credit-name"]) &&  // array of credits passed from form
-            Array.isArray(req.body["credit-role"])) {
-            req.body["credit-name"].forEach( (creditName, i) => {
+    if (req.body["credits-name"] && req.body["credits-role"]) {
+        if (Array.isArray(req.body["credits-name"]) &&  // array of credits passed from form
+            Array.isArray(req.body["credits-role"])) {
+            req.body["credits-name"].forEach( (creditName, i) => {
                 credits.push({
                     name: creditName,
-                    role: req.body["credit-role"][i],
+                    role: req.body["credits-role"][i],
                 });
             });
-        } else if (typeof req.body["credit-name"] === "string" &&  // single credit passed from form
-            typeof req.body["credit-role"] === "string") {
+        } else if (typeof req.body["credits-name"] === "string" &&  // single credit passed from form
+            typeof req.body["credits-role"] === "string") {
                 credits.push({
-                    name: req.body["credit-name"],
-                    role: req.body["credit-role"],
+                    name: req.body["credits-name"],
+                    role: req.body["credits-role"],
                 });
         }
     }
 
-    // not sure if this works? do we have to append?
-    asset.meta.credits = credits;
+
+    // need to append credits, cannot assign directly
+    asset.meta.credits = [];
+    credits.forEach(credit => {
+        asset!.meta.credits.push(credit);
+    });
 
     // set title
     asset.meta.title = req.body.title || asset.meta.title;
@@ -284,15 +289,140 @@ async function _update(req: Request, res: Response, next: NextFunction) {
         res.redirect("/portfolio");
 }
 
-function _edit(req: Request, res: Response, next: NextFunction) {
-    render("asset/edit", req, res);
+
+// Gets cover image for an asset.
+// Assumes user._id and asset.user._id point to the same document.
+export async function getCoverFilePath(asset: AssetDocument, user: UserDocument) {
+    // Get cover file path
+    // hmmm it's kind of convoluted to get the album image, we should sum it up in a function
+    let coverFilePath: string | null = null;
+    try {
+        const coverFile = await File.findById(asset.cover);
+        if (coverFile)
+            coverFilePath = coverFile.path;
+    } catch(err) {
+        console.error(err);
+        return null;
+    }
+
+    if (!coverFilePath) {
+        let avatarPath: string;
+        if (user.avatarFile) {
+            try {
+                user = await user.populate("avatarFile");
+                avatarPath = (user as UserDocument & {avatarFile: FileDocument}).avatarFile.path;
+            } catch(err) {
+                console.error(err);
+                return null;
+            }
+        } else {
+            avatarPath = user.avatar;
+        }
+        coverFilePath = avatarPath;
+    }
+
+    return coverFilePath;
+}
+
+
+async function _edit(req: Request, res: Response, next: NextFunction) {
+    // get asset id
+    const assetId = req.params["id"];
+    if (!assetId) {
+        next(new ReferenceError("Param :id was undefined"));
+        return;
+    }
+
+    // get asset doc from database
+    let asset: AssetDocument | null = null;
+    try {
+        asset = await Asset.findById(assetId);
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    if (!asset) {
+        next(new Error("Asset document was not found in database"));
+        return;
+    }
+
+    // ensure that user exists
+    let user: UserDocument = req.user;
+    if (!user) {
+        next(new ReferenceError("User object was unexpectedly undefined"));
+        return;
+    }
+
+    // ensure that the user is the asset owner
+    if (user._id.toString() !== asset.user._id.toString()) {
+        res.status(403);
+        next(new Error("Sorry, you do not have permission to view this content"));
+        return;
+    }
+
+
+    // get cover art file path
+    let coverFilePath: string | null;
+    try {
+        coverFilePath = await getCoverFilePath(asset, user);
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    if (!coverFilePath) {
+        next(new Error("Could not get the cover file path"));
+        return;
+    }
+
+    // get asset file path
+    let assetFilePath: string | null = null;
+    try {
+        const assetFile: FileDocument | null = await File.findById(asset.file);
+        if (assetFile) {
+            assetFilePath = assetFile.path;
+        }
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    if (!assetFilePath) {
+        next(new Error("Failed to get asset file path"));
+        return;
+    }
+
+
+    // Set the editor view depending on file type
+    let viewPath = "asset/edit/";
+    let css: string[] = [];
+    switch(asset.type) {
+        case AssetType.Audio:
+            viewPath += "audio";
+            css.push("/styles/audio-player.css");
+            break;
+        default:
+            next(new Error("Asset types besides audio are currently unsupported"));
+            break;
+    }
+
+    render(viewPath, req, res, {
+        locals: {
+            asset,
+            user,
+            coverFilePath,
+            assetFilePath,
+        },
+        css,
+    });
 }
 
 async function _delete(req: Request, res: Response, next: NextFunction) {
     // ensure assetId exists
     const assetId = req.params["id"];
     if (!assetId) {
-        next(ReferenceError("Param :id was undefined"));
+        next(new ReferenceError("Param :id was undefined"));
         return;
     }
 
@@ -319,7 +449,7 @@ async function _delete(req: Request, res: Response, next: NextFunction) {
     }
     if (user._id !== asset.user._id) {
         res.status(403);
-        next(new Error("Sorry, you are not allowed to access this content."));
+        next(new Error("Sorry, you do not have permission to view this content."));
         return;
     }
 

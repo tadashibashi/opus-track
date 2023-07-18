@@ -18,8 +18,9 @@ const authorized = viewer ? viewer._id.toString() === owner._id.toString() : fal
     <% if (!portfolio) { %>
         <p class="text-center">This artist has not created their portfolio yet...</p>
     <% } else { %>
+
         <% portfolio.assets.forEach((asset, i)=> { %>
-            <h4 class="album-title"><%=asset.meta.title%> <span class="album-artist text-sm">by <%=asset.meta.credits[0].name%></span></h4>
+            <h4 class="album-title"><%=asset.meta.title%> <span class="album-artist text-sm"><%= asset.meta.credits.length ? "by " + asset.meta.credits[0].name : ""%></span></h4>
 
             <div class="mini-audio-container">
                 <div class="album-art-container">
