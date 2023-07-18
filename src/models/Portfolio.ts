@@ -1,15 +1,14 @@
 import mongoose, {Schema, Types} from "mongoose";
 
 interface IPortfolio {
-    assets: Types.ObjectId,
+    assets: Types.ObjectId[],
     owner: Types.ObjectId,
+    isPublic: boolean,
     createdAt: Date,
     updatedAt: Date,
 }
 
-export type ProfileDocument = mongoose.HydratedDocument<IPortfolio>;
-
-const profileSchema = new Schema({
+const portfolioSchema = new Schema<IPortfolio>({
     assets: {
         type: [Schema.ObjectId],
         ref: "Asset",
@@ -19,12 +18,16 @@ const profileSchema = new Schema({
         ref: "User",
         required: true,
     },
+    isPublic: {
+        type: Boolean,
+        default: true,
+    }
 }, {
     timestamps: true,
 });
 
 export type PortfolioDocument = mongoose.HydratedDocument<IPortfolio>;
 
-export const Portfolio = mongoose.model("Profile", profileSchema);
+export const Portfolio = mongoose.model("Profile", portfolioSchema);
 
 export default Portfolio;

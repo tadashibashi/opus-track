@@ -4,20 +4,26 @@ let logText = user ? "Logout" : "Login"
 let logLink = user ? "/auth/logout" : "/auth/google"
 %>
 
-<nav class="navbar container">
-    <div class="navbar-brand">
-        <h2><a href="/profile">Opus Track</a></h2>
-    </div>
-    <% if (user) { %>
-    <div>
-        <a href="/profile">Portfolio</a>
-    </div>
-    <div>
-        <a href="/profile/edit">Profile</a>
-    </div>
-    <% } %>
+<nav class="navbar">
+    <div class="container">
+        <div class="navbar-brand">
+            <!-- TODO: change to target user portal home later -->
+            <h3 class="text-lg-center"><a href="/account/edit">OPUS TRACK</a></h3>
+        </div>
+        <div>
+            <a href="/">Browse</a>
+        </div>
+        <% if (user) { %>
+            <div>
+                <a href="/portfolio">My Portfolio</a>
+            </div>
+            <div>
+                <a href="/account/edit">Settings</a>
+            </div>
+        <% } %>
 
-    <div>
-        <a href="<%=logLink%>"><%=logText%></a>
+        <div class="float-end">
+            <a href="<%=logLink%>"><%=logText%></a>
+        </div>
     </div>
 </nav>

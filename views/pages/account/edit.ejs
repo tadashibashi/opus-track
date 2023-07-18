@@ -4,7 +4,7 @@ const {user, avatarFile} = locals;
 
 <section class="container">
     <h1 class="mb-4">Edit Account</h1>
-    <form class="container-lg" method="POST" action="/profile?_method=PATCH" enctype="multipart/form-data">
+    <form class="container-lg" method="POST" action="/account?_method=PATCH" enctype="multipart/form-data">
         <label class="form-label" for="file">Profile Picture</label>
         <input class="form-control" type="file" id="file"  name="profilePic" accept=".png,.jpg,.jpeg" />
         <p class="text-sm float-end pe-2">max size: 1MB</p>
@@ -14,9 +14,13 @@ const {user, avatarFile} = locals;
         </div>
         <p class="text-sm text-center">For best results, use a large image with a 1:1 aspect ratio</p>
 
+        <label class="form-label" for="displayName">Artist Name</label>
+        <input id="displayName" class="form-control" name="displayName" type="text" required value="<%=user.displayName ? user.displayName : user.username%>" pattern="\s*\w[\w\s]*\s*">
+        <p class="text-sm mb-4">This name appears on your portfolio page</p>
+
         <label class="form-label" for="username">Username</label>
         <input id="username" class="form-control" name="username" type="text" required value="<%=user.username%>" pattern="\s*\w+\s*">
-        <p class="text-sm float-start text-start">your unique profile url: <code class="text-sm rounded-1 bg-light">/profile/a/<span id="user-link"><%=user.username%></span></code></p>
+        <p class="text-sm float-start text-start">Your unique portfolio url: <code class="text-sm rounded-1 bg-light">/portfolio/a/<span id="user-link"><%=user.username%></span></code></p>
         <p class="text-sm text-end">must contain no spaces</p>
 
         <button class="btn btn-primary">Update</button>

@@ -9,7 +9,6 @@ const isProduction = process.env.NODE_ENV == 'production';
 // Main configuration
 const config = {
   entry: {
-    AudioPlayer: "./src/audio-player/index.ts"
   },
   output: {
     path: path.resolve(__dirname, '../public/scripts'),

@@ -1,0 +1,37 @@
+<%
+const {viewer, owner, portfolio, coverArtSrcs, assetFilePaths} = locals;
+const authorized = viewer ? viewer._id.toString() === owner._id.toString() : false;
+%>
+
+<section class="container">
+    <% if (authorized) { %>
+        <a href="/portfolio/asset" class="float-end">
+            <button class="btn btn-primary">
+                Add Track
+                <img alt="plus icon" class="float-end ps-2" src="/images/feather/plus.svg">
+            </button>
+        </a>
+    <% } %>
+
+    <h1 class="text-center mb-4"><%=owner.displayName ? owner.displayName : owner.username%></h1>
+
+    <% if (!portfolio) { %>
+        <p class="text-center">This artist has not created their portfolio yet...</p>
+    <% } else { %>
+        <% portfolio.assets.forEach((asset, i)=> { %>
+            <h4 class="album-title"><%=asset.meta.title%> <span class="album-artist text-sm">by <%=asset.meta.credits[0].name%></span></h4>
+
+            <div class="mini-audio-container">
+                <div class="album-art-container">
+                    <img class="album-art" alt="album cover art" src="<%=coverArtSrcs[i] || owner.avatarFile.path%>" />
+                </div>
+
+                <%- include("../../partials/mini-audio", {locals: {audioSrc: assetFilePaths[i], authorized, assetId: asset._id}} ); %>
+            </div>
+
+        <% }); %>
+    <% } %>
+
+    <input id="volume-slider" type="range" min="0" max="1"/>
+
+</section>

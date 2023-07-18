@@ -3,17 +3,13 @@ const {user, portfolio, avatarPath} = locals;
 %>
 
 <section class="container">
-    <div class="mt-4 mb-4">
-        <h1>Portfolio Editor</h1>
-    </div>
-
     <div>
         <%if (!portfolio) { %>
             <button class="btn btn-primary"><a href="/portfolio?_method=POST">Create Portfolio</a></button>
         <% } else { %>
 
             <!-- Create new asset -->
-            <h3>Add New Track</h3>
+            <h1>Add New Track</h1>
             <form class="container-lg" method="post" action="/portfolio/asset" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label class="form-label" for="title">Title</label>
@@ -54,8 +50,8 @@ const {user, portfolio, avatarPath} = locals;
                     </div>
 
                     <div>
-                        <label class="form-label">Name<input class="form-control" type="text" name="credits-name" value="<%=user.firstName + " " + user.lastName%>"/></label>
-                        <label class="form-label">Role<input class="form-control" type="text" name="credits-role" value="Artist"/></label>
+                        <label class="form-label">Name<input required class="form-control" type="text" name="credits-name" value="<%=user.firstName + " " + user.lastName%>"/></label>
+                        <label class="form-label">Role<input required class="form-control" type="text" name="credits-role" value="Artist"/></label>
                     </div>
 
                 </div>
@@ -66,22 +62,6 @@ const {user, portfolio, avatarPath} = locals;
 
 
             </form>
-
-            <% if (portfolio.assets.length > 0) { %>
-                <h2>Tracks in Portfolio</h2>
-                <% portfolio.assets.forEach(asset => { %>
-                        <div class="audio-player mb-4" data-asset="<%=asset.file.path%>">
-                            <div class="play-button-container">
-                                <div class="play-button">
-                                    <img src="/images/feather/play.svg" />
-                                </div>
-                            </div>
-                            <div class="audio-region">
-                                <canvas></canvas>
-                            </div>
-                        </div>
-                <% }); %>
-            <% } %>
         <% } %>
     </div>
 

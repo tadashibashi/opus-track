@@ -16,12 +16,20 @@ interface IMeta {
 }
 export type MetaSubDoc = Types.Subdocument<IMeta>;
 
+export enum AssetType {
+    Audio = "Audio",
+    Image = "Image",
+    Video = "Video",
+    Doc = "Doc",
+}
+const assetTypes = Object.keys(AssetType);
 
 interface IAsset {
-    type: string;
+    type: AssetType;
     user: Types.ObjectId;
     file: Types.ObjectId;
-    meta: Types.Subdocument;
+    cover: Types.ObjectId;
+    meta: IMeta;
 }
 export type AssetDocument = mongoose.HydratedDocument<IAsset>;
 
@@ -49,16 +57,10 @@ const metaSchema = new Schema<IMeta>({
     }
 });
 
-export enum AssetType {
-    Audio = "Audio",
-    Image = "Image",
-    Video = "Video",
-    Doc = "Doc",
-}
-const assetTypes = Object.keys(AssetType);
 
 
-const assetSchema = new Schema({
+
+const assetSchema = new Schema<IAsset>({
     type: {
         type: String,
         enum: assetTypes,
@@ -73,7 +75,7 @@ const assetSchema = new Schema({
     },
     cover: {
         type: Schema.Types.ObjectId,
-        ref: "Asset",
+        ref: "File",
     },
     file: {
         type: Schema.Types.ObjectId,

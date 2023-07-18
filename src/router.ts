@@ -9,9 +9,8 @@ pages.init("Opus Track");
 // sub-routers
 import authRouter from "./routes/auth";
 import indexRouter from "./routes/index";
-import tracksRouter from "./routes/tracks";
 import filesRouter from "./routes/files";
-import profileRouter from "./routes/profile";
+import accountRouter from "./routes/user";
 import portfolioRouter from "./routes/portfolio";
 import errorRouter from "./routes/error";
 
@@ -19,8 +18,7 @@ import errorRouter from "./routes/error";
 router.use("/", indexRouter);
 router.use("/auth", authRouter);
 router.use("/files", filesRouter);
-router.use("/tracks", tracksRouter);
-router.use("/profile", profileRouter);
+router.use("/account", accountRouter);
 router.use("/portfolio", portfolioRouter);
 router.use("/", errorRouter);
 

@@ -48,9 +48,9 @@ import {initTooltips} from "../../util/tooltips";
         // update username link
         const userLinkEl = document.getElementById("user-link");
         const usernameInputEl = document.getElementById("username") as HTMLInputElement;
-
         usernameInputEl.addEventListener("input", evt => {
-           userLinkEl.innerText = usernameInputEl.value.trim();
+            const username = usernameInputEl.value.trim();
+            userLinkEl.innerText = username;
         });
     }
 })();

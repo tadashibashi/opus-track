@@ -38,6 +38,7 @@ export const userSchema = new Schema({
     avatar: String,
     avatarFile: {
         type: Schema.Types.ObjectId,
+        ref: "File",
         nullable: true,
         default: null,
     },

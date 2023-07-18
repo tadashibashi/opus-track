@@ -6,7 +6,7 @@
 
     border: 1px solid #d0d0d0;
     border-radius: 50vmin;
-    max-height: 100px;
+    max-height: 200px;
     overflow: hidden;
 }
 
@@ -17,12 +17,16 @@
     max-height: inherit;
     height: 100%;
     aspect-ratio: 1/1;
+
+    background: #eaeaea;
+
 }
 
 .audio-player .play-button {
     display: flex;
     align-items: center;
     justify-content: center;
+
 
     border-radius: 50%;
     aspect-ratio: 1/1;
@@ -32,6 +36,17 @@
     cursor: pointer;
 
     background: #4b88e3;
+
+    user-select: none;
+
+}
+
+.audio-player .play-button:hover {
+    background: #5ba9da;
+}
+
+.audio-player .play-button:active {
+    background: #2e42b0;
 }
 
 .audio-player .play-button > img {
@@ -64,4 +79,5 @@
     height: 100%;
     padding: 0;
     margin: 0;
+    image-rendering: pixelated;
 }

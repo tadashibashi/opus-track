@@ -19,11 +19,11 @@ function main() {
         const div = document.createElement("div");
 
         const nameLabel = document.createElement("label");
-        nameLabel.innerHTML = "<input class='form-control' type='text' name='credits-name'/>";
+        nameLabel.innerHTML = "<input class='form-control' type='text' name='credits-name' required/>";
         div.appendChild(nameLabel);
 
         const roleLabel = document.createElement("label");
-        roleLabel.innerHTML = "<input class='form-control' type='text' name='credits-role'/>";
+        roleLabel.innerHTML = "<input class='form-control' type='text' name='credits-role' required/>";
         div.appendChild(roleLabel);
 
         const credits = document.getElementById("credits");

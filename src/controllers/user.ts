@@ -9,36 +9,8 @@ import {FileDocument} from "../models/File";
 import fs from "fs";
 
 async function _index(req: Request, res: Response, next: NextFunction) {
-    if (!req.user) {
-        next(ReferenceError("User is not available even though authenticated!"));
-        return;
-    }
-
-    const user = req.user as UserDocument;
-
-    let portfolio: PortfolioDocument | null;
-    try {
-        portfolio = await Portfolio.findOne({owner: user._id});
-    } catch(err) {
-        next(err);
-        return;
-    }
-
-    let avatarPath = user.avatar;
-    if (user.avatarFile) {
-        const avatarFile = await File.findById(user.avatarFile);
-
-        if (avatarFile) {
-            avatarPath = avatarFile.path;
-        }
-    }
-
-    const locals = {
-        portfolio,
-        avatarPath,
-    };
-
-    render("profile", req, res, {locals, css: ["/styles/audio-player.css"]});
+    // todo!!!
+    throw new Error("This route is not implemented yet!");
 }
 
 async function _edit(req: Request, res: Response, next: NextFunction) {
@@ -61,7 +33,7 @@ async function _edit(req: Request, res: Response, next: NextFunction) {
         const locals = {
             avatarFile: avatarPath,
         };
-        render("profile/edit", req, res, {locals});
+        render("account/edit", req, res, {locals});
     } catch(err) {
         next(err);
     }
@@ -93,6 +65,12 @@ async function _patch(req: Request, res: Response, next: NextFunction) {
     let username = req.body.username;
     if (typeof username === "string") {
         username = username.trim();
+    }
+
+    let displayName = req.body.displayName;
+    if (typeof displayName === "string") {
+        displayName = displayName.trim();
+        user.displayName = displayName;
     }
 
     let isUniqueUsername: boolean = false;
@@ -150,7 +128,7 @@ async function _patch(req: Request, res: Response, next: NextFunction) {
         next(err);
         return;
     }
-    res.redirect("/profile");
+    res.redirect("/account/edit");
 }
 
 export default {

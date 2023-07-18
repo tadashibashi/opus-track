@@ -4,6 +4,7 @@ import fs from "fs";
 import {getEnv, scanner} from "../util";
 import {UserDocument} from "../models/User";
 import {FileDocument, File} from "../models/File";
+import path from "path";
 
 
 scanner.config()
@@ -16,7 +17,11 @@ class FileInfectedError extends Error {
     }
 }
 
-export async function deleteFile(file: FileDocument) {
+export async function deleteFile(id: string) {
+    const file = await File.findById(id);
+    if (!file)
+        return false;
+
     let result = false;
     try {
         result = await new Promise((resolve, reject) => {
@@ -76,8 +81,9 @@ export async function createFile(file: Express.Multer.File, user: UserDocument, 
 
     if (dbFile === null) return null;
 
-    let filepath = folder + dbFile._id;
-    dbFile.path = "/files/" + (user ? "users/" + user._id : "") + "/" + dbFile._id;
+    const ext = path.extname(file.originalname);
+    let filepath = folder + dbFile._id + ext;
+    dbFile.path = "/files/" + (user ? "users/" + user._id : "") + "/" + dbFile._id + ext;
     dbFile.fullpath = filepath;
     try {
         fs.writeFile(filepath, file.buffer, () => {

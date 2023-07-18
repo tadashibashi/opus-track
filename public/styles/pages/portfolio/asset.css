@@ -4,11 +4,6 @@
 /*    flex-flow: column nowrap;*/
 /*}*/
 
-h3 {
-    margin-bottom: 4vmin;
-    border-bottom: 1px #c5c5c5 solid;
-}
-
 #cover-image-form-container {
     display: grid;
     grid-template-columns: 1fr 2fr;

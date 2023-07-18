@@ -6,6 +6,14 @@ const upload = Multer();
 
 const router = Router();
 
+// main portfolio view page in user portal, reroutes to your personal page
+router.get("/", authorize(), portfolioCtrl.index);
+
+router.get("/a/:username", portfolioCtrl.main);
+
+// edit page to create new audio asset
+router.get("/asset", authorize(), portfolioCtrl.addAsset);
+
 // create an individual portfolio
 router.post("/", authorize(), portfolioCtrl.create);
 

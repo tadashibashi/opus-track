@@ -1,4 +1,18 @@
 @font-face {
+    font-family: "Montserrat-Arabic";
+    font-style: normal;
+    font-weight: 400;
+    src: url(/fonts/Montserrat-Arabic-Regular.otf);
+}
+
+@font-face {
+    font-family: "Montserrat-Arabic";
+    font-style: normal;
+    font-weight: 600;
+    src: url(/fonts/Montserrat-Arabic-SemiBold.otf);
+}
+
+@font-face {
     font-family: "Noto Sans";
     font-style: normal;
     font-weight: 400;
@@ -19,13 +33,30 @@
     src: url(/fonts/NotoSans-Bold.ttf);
 }
 
-
 :root {
     --color-faded: #c0c0c0;
 }
 
 * {
     box-sizing: border-box;
+}
+
+nav {
+    background: #367cd7;
+}
+
+nav a {
+    text-shadow: 1px 1px rgba(139, 139, 211, 0.58);
+}
+
+nav .navbar-brand {
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #1e1e1e;
 }
 
 html {
@@ -37,20 +68,9 @@ html {
 body {
     width: 100%;
     height: 100%;
-
-    /*display: grid;*/
-    /*grid-template-areas:*/
-    /*"header"*/
-    /*"main"*/
-    /*"footer";*/
-
-    /*grid-template-columns: 1fr;*/
-    /*grid-template-rows: auto 1fr auto;*/
-
-    /*align-content: center;*/
     background: #eaeaea;
 
-    font-family: "Noto Sans", Arial, serif;
+    font-family: "Montserrat-Arabic", Arial, serif;
     overflow-x: hidden;
 }
 
@@ -71,6 +91,8 @@ main {
 footer {
     grid-area: footer;
     text-align: center;
+
+    margin-top: 8vmin;
 }
 
 footer p {
@@ -80,4 +102,9 @@ footer p {
 .text-sm {
     font-size: .8rem;
     color: var(--color-faded);
+}
+
+img {
+    user-select: none;
+    -webkit-user-drag: none;
 }

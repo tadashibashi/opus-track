@@ -1,0 +1,73 @@
+
+:root {
+    --player-height: 100px;
+}
+
+.audio-player.mini {
+    max-height: var(--player-height);
+}
+
+
+.mini-audio-container {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: auto 4fr;
+    column-gap: 1vmin;
+}
+
+.mini-audio-container .album-art-container {
+    max-height: var(--player-height);
+    aspect-ratio: 1/1;
+    background: #eaeaea;
+    padding: 1px;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.28);
+
+
+}
+
+.mini-audio-container .edit-button {
+    position: absolute;
+    right: 4vmin;
+    top: .25vmin;
+
+    background: transparent;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.mini-audio-container:hover .edit-button {
+    visibility: visible;
+}
+
+.mini-audio-container .album-art {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.album-title {
+    position: relative;
+}
+
+.album-artist {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.mini-audio-container .audio-region {
+    position: relative;
+}
+
+.mini-audio-container .time-display {
+    position: absolute;
+    bottom: 0;
+    right: 4vmin;
+    margin: 0;
+    color: #b4b4b4;
+    background: rgba(238, 238, 238, 0.84);
+    border-radius: 50px;
+    padding: 0 1vmin;
+}

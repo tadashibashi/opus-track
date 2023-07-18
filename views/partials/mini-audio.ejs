@@ -1,0 +1,19 @@
+<%
+const {audioSrc, authorized, assetId} = locals;
+console.log(audioSrc);
+%>
+
+<div class="audio-player mini mb-4" data-src="<%=audioSrc%>">
+    <div class="play-button-container">
+        <div class="play-button">
+            <img src="/images/feather/play.svg" />
+        </div>
+    </div>
+    <div class="audio-region">
+        <% if (authorized) { %>
+            <a href="/assets/<%=assetId%>?_method=PUT" class="edit-button"><img alt="editing pencil icon" src="/images/feather/edit.svg"/></a>
+        <% } %>
+        <canvas></canvas>
+        <p class="time-display"><span class="cur-time">0:00</span>/<span class="max-time">0:00</span></p>
+    </div>
+</div>
