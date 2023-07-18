@@ -12,7 +12,7 @@ export type CreditSubDoc = Types.Subdocument<ICredit>;
 
 interface IMeta {
     title: string;
-    credits: Types.Subdocument<ICredit>[];
+    credits: ICredit[];
 }
 export type MetaSubDoc = Types.Subdocument<IMeta>;
 

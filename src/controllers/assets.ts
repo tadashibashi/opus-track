@@ -3,6 +3,7 @@ import {NextFunction, Request, Response} from "express";
 import {File, FileDocument} from "../models/File";
 import {UserDocument} from "../models/User";
 import {createFile, deleteFile} from "./files";
+import {render} from "../pages";
 
 /**
  * Show one asset. Rendering depends on the filetype. For now only audio is implemented.
@@ -244,12 +245,79 @@ async function _update(req: Request, res: Response, next: NextFunction) {
     // update metadata
     // collect credits
     const credits: ICredit[] = [];
+    if (req.body["credit-name"] && req.body["credit-role"]) {
+        if (Array.isArray(req.body["credit-name"]) &&  // array of credits passed from form
+            Array.isArray(req.body["credit-role"])) {
+            req.body["credit-name"].forEach( (creditName, i) => {
+                credits.push({
+                    name: creditName,
+                    role: req.body["credit-role"][i],
+                });
+            });
+        } else if (typeof req.body["credit-name"] === "string" &&  // single credit passed from form
+            typeof req.body["credit-role"] === "string") {
+                credits.push({
+                    name: req.body["credit-name"],
+                    role: req.body["credit-role"],
+                });
+        }
+    }
+
+    // not sure if this works? do we have to append?
+    asset.meta.credits = credits;
 
     // set title
     asset.meta.title = req.body.title || asset.meta.title;
 
+
+    try {
+        await asset.save();
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    const redirect = req.query["_redirect"];
+    if (typeof redirect === "string")
+        res.redirect(redirect);
+    else
+        res.redirect("/portfolio");
 }
 
+function _edit(req: Request, res: Response, next: NextFunction) {
+    render("asset/edit", req, res);
+}
+
+async function _delete(req: Request, res: Response, next: NextFunction) {
+    const assetId = req.params["id"];
+    if (!assetId) {
+        next(ReferenceError("Param :id was undefined"));
+        return;
+    }
+
+    let result: boolean = false;
+    try {
+        result = await deleteAsset(assetId);
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    if (!result) {
+        next(new Error("Failed to delete asset."));
+        return;
+    }
+
+    const redirect = req.query["_redirect"];
+    if (typeof redirect === "string")
+        res.redirect(redirect);
+    else
+        res.redirect("/portfolio");
+}
+
+
 export default {
+    edit: _edit,
     update: _update,
+    delete: _delete,
 }
