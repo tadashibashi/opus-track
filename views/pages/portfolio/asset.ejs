@@ -3,9 +3,8 @@ const {user, portfolio, avatarPath} = locals;
 %>
 
 <section class="container">
-    <div class="m-4">
-        <h2>Portfolio Editor</h2>
-
+    <div class="mt-4 mb-4">
+        <h1>Portfolio Editor</h1>
     </div>
 
     <div>
@@ -13,12 +12,8 @@ const {user, portfolio, avatarPath} = locals;
             <button class="btn btn-primary"><a href="/portfolio?_method=POST">Create Portfolio</a></button>
         <% } else { %>
 
-            <% portfolio.assets.forEach(asset => { %>
-                <h3><%=asset.meta.title%></h3>
-            <% }); %>
-
             <!-- Create new asset -->
-            <h3>New Track</h3>
+            <h3>Add New Track</h3>
             <form class="container-lg" method="post" action="/portfolio/asset" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label class="form-label" for="title">Title</label>
@@ -59,8 +54,8 @@ const {user, portfolio, avatarPath} = locals;
                     </div>
 
                     <div>
-                        <label>Name<input class="form-control" type="text" name="credits-name" value="<%=user.firstName + " " + user.lastName%>"/></label>
-                        <label>Role<input class="form-control" type="text" name="credits-role" value="Artist"/></label>
+                        <label class="form-label">Name<input class="form-control" type="text" name="credits-name" value="<%=user.firstName + " " + user.lastName%>"/></label>
+                        <label class="form-label">Role<input class="form-control" type="text" name="credits-role" value="Artist"/></label>
                     </div>
 
                 </div>
@@ -72,19 +67,21 @@ const {user, portfolio, avatarPath} = locals;
 
             </form>
 
-            <h2>Tracks in Portfolio</h2>
-            <% portfolio.assets.forEach(asset => { %>
-                    <div class="audio-player mb-4" data-asset="<%=asset.file.path%>">
-                        <div class="play-button-container">
-                            <div class="play-button">
-                                <img src="/images/feather/play.svg" />
+            <% if (portfolio.assets.length > 0) { %>
+                <h2>Tracks in Portfolio</h2>
+                <% portfolio.assets.forEach(asset => { %>
+                        <div class="audio-player mb-4" data-asset="<%=asset.file.path%>">
+                            <div class="play-button-container">
+                                <div class="play-button">
+                                    <img src="/images/feather/play.svg" />
+                                </div>
+                            </div>
+                            <div class="audio-region">
+                                <canvas></canvas>
                             </div>
                         </div>
-                        <div class="audio-region">
-                            <canvas></canvas>
-                        </div>
-                    </div>
-            <% }); %>
+                <% }); %>
+            <% } %>
         <% } %>
     </div>
 

@@ -2,6 +2,8 @@ import database from "./src/database";
 
 import File from "./src/models/File";
 import User from "./src/models/User";
+import Asset from "./src/models/Asset";
+import Portfolio from "./src/models/Portfolio";
 
 const m = {
     File,

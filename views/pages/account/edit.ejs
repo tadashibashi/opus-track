@@ -2,8 +2,8 @@
 const {user, avatarFile} = locals;
 %>
 
-<section>
-    <h1>Edit Profile</h1>
+<section class="container">
+    <h1 class="mb-4">Edit Account</h1>
     <form class="container-lg" method="POST" action="/profile?_method=PATCH" enctype="multipart/form-data">
         <label class="form-label" for="file">Profile Picture</label>
         <input class="form-control" type="file" id="file"  name="profilePic" accept=".png,.jpg,.jpeg" />
