@@ -11,7 +11,7 @@ router.get("/", authorize(), portfolioCtrl.index);
 router.get("/a/:username", portfolioCtrl.main);
 
 // edit page to create new audio asset
-router.get("/asset", authorize(), portfolioCtrl.addAsset);
+router.get("/asset", authorize(), portfolioCtrl.newAsset);
 
 // create an individual portfolio
 router.post("/", authorize(), portfolioCtrl.create);

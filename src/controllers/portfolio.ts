@@ -1,12 +1,18 @@
 import {NextFunction, Request, Response} from "express";
-import Portfolio, {PortfolioDocument} from "../models/Portfolio";
-import {createAsset, deleteAsset} from "./assets";
 import {AssetDocument, AssetType, ICredit} from "../models/Asset";
-import {UserDocument, User} from "../models/User";
 import File from "../models/File";
+import {Portfolio, PortfolioDocument} from "../models/Portfolio";
+import {UserDocument, User} from "../models/User";
+
+import {createAsset, deleteAsset} from "./assets";
 import {render} from "../pages";
 
 
+/**
+ * controllers / portfolio -> create.
+ * Creates a portfolio object for a registered user.
+ * @route POST "/portfolio"
+ */
 async function _create(req: Request, res: Response, next: NextFunction) {
     if (!req.user) {
         next(new ReferenceError("User object does not exist even though authorized."));
@@ -27,6 +33,13 @@ async function _create(req: Request, res: Response, next: NextFunction) {
 }
 
 
+/**
+ * controllers / portfolio -> delete
+ * Deletes a portfolio object
+ *
+ * @route DELETE "/portfolio/:id"
+ * id - the portfolio id to delete
+ */
 async function _delete(req: Request, res: Response, next: NextFunction) {
     // ensure user object exists
     if (!req.user) {
@@ -70,7 +83,9 @@ async function _delete(req: Request, res: Response, next: NextFunction) {
         return;
     }
 
-    res.redirect("/portfolio");
+
+    res.redirect(typeof req.query["_redirect"] === "string" ?
+        req.query["_redirect"] : "/portfolio");
 }
 
 
@@ -147,7 +162,6 @@ async function _createAsset(req: Request, res: Response, next: NextFunction) {
 
     // add to portfolio
     portfolio.assets.push(asset._id);
-
     try {
         await portfolio.save();
     } catch(err) {
@@ -159,8 +173,13 @@ async function _createAsset(req: Request, res: Response, next: NextFunction) {
     res.redirect("/portfolio");
 }
 
-
-async function _addAsset(req: Request, res: Response, next: NextFunction) {
+/**
+ * Creates an asset that the portfolio will reference.
+ * TODO: decouple this and simply call create asset from the asset route?
+ * controllers/portfolio -> newAsset
+ * @route POST /portfolio/asset
+ */
+async function _newAsset(req: Request, res: Response, next: NextFunction) {
     if (!req.user) {
         next(ReferenceError("User is not available even though authenticated!"));
         return;
@@ -193,7 +212,12 @@ async function _addAsset(req: Request, res: Response, next: NextFunction) {
     render("portfolio/asset", req, res, {locals, css: ["/styles/audio-player.css"]});
 }
 
-
+/**
+ * Displays a user's portfolio
+ *
+ * controllers/portfolio -> main
+ * @route GET /portfolio/a/:username
+ */
 async function _main(req: Request, res: Response, next: NextFunction) {
     const viewer = req.user;
     const ownerName = req.params.username;
@@ -240,20 +264,25 @@ async function _main(req: Request, res: Response, next: NextFunction) {
     });
 }
 
+/**
+ * Redirects to /portfolio/a/ + username, which is handled in {@link _main}
+ */
 function _index(req: Request, res: Response, next: NextFunction) {
     const user: UserDocument | undefined = req.user;
-    if (!user) {
-        next(new ReferenceError("Missing user object"));
+    if (!user) { // guest user, redirect to browse
+        res.redirect("/browse");
         return;
     }
 
-    res.redirect("portfolio/a/" + user.username);
+    res.redirect("/portfolio/a/" + user.username);
 }
+
+
 
 export default {
     main: _main,
     index: _index,
-    addAsset: _addAsset,
+    newAsset: _newAsset,
     create: _create,
     delete: _delete,
     createAsset: _createAsset,
