@@ -44,7 +44,6 @@ export async function deleteFile(id: string) {
  * Creates a file in db and local file system.
  * @param file - the file retrieved from Multer.
  * @param user - user that the File will become associated with.
- * @param folder - will save to this exact folder on server.
  * Make sure to set to something like: `process.cwd() + "/public/files/users/"`.
  * @returns promise resolving to true on successful file write, and false on failure to write.
  * On failure, both database data and local file are cleaned up if any was written.
